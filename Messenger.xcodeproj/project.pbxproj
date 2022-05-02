@@ -20,6 +20,10 @@
 		7826711F281EBA6D005FD952 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7826711E281EBA6D005FD952 /* NewConversationVC.swift */; };
 		78267121281EBA91005FD952 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78267120281EBA91005FD952 /* ProfileVC.swift */; };
 		78267124281ED4A7005FD952 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78267123281ED4A7005FD952 /* Extensions.swift */; };
+		78267127281FB039005FD952 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 78267126281FB039005FD952 /* FirebaseAuth */; };
+		78267129281FB03A005FD952 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 78267128281FB039005FD952 /* FirebaseDatabase */; };
+		7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7826712C281FD962005FD952 /* DatabaseManager.swift */; };
+		7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7826712E281FDBF3005FD952 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,8 @@
 		7826711E281EBA6D005FD952 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		78267120281EBA91005FD952 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		78267123281ED4A7005FD952 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		7826712C281FD962005FD952 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78267129281FB03A005FD952 /* FirebaseDatabase in Frameworks */,
+				78267127281FB039005FD952 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +84,7 @@
 				78267111281EB834005FD952 /* Views */,
 				78267112281EB839005FD952 /* Controllers */,
 				78267108281EB335005FD952 /* Info.plist */,
+				7826712E281FDBF3005FD952 /* GoogleService-Info.plist */,
 			);
 			path = Messenger;
 			sourceTree = "<group>";
@@ -86,6 +95,7 @@
 				782670FA281EB335005FD952 /* AppDelegate.swift */,
 				782670FC281EB335005FD952 /* SceneDelegate.swift */,
 				78267123281ED4A7005FD952 /* Extensions.swift */,
+				7826712C281FD962005FD952 /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -160,6 +170,10 @@
 			dependencies = (
 			);
 			name = Messenger;
+			packageProductDependencies = (
+				78267126281FB039005FD952 /* FirebaseAuth */,
+				78267128281FB039005FD952 /* FirebaseDatabase */,
+			);
 			productName = Messenger;
 			productReference = 782670F7281EB335005FD952 /* Messenger.app */;
 			productType = "com.apple.product-type.application";
@@ -188,6 +202,9 @@
 				Base,
 			);
 			mainGroup = 782670EE281EB335005FD952;
+			packageReferences = (
+				78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 782670F8281EB335005FD952 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78267107281EB335005FD952 /* LaunchScreen.storyboard in Resources */,
+				7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */,
 				78267104281EB335005FD952 /* Assets.xcassets in Resources */,
 				78267102281EB335005FD952 /* Main.storyboard in Resources */,
 			);
@@ -216,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7826711F281EBA6D005FD952 /* NewConversationVC.swift in Sources */,
+				7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */,
 				7826711D281EBA41005FD952 /* VideoPlayerVC.swift in Sources */,
 				782670FB281EB335005FD952 /* AppDelegate.swift in Sources */,
 				78267121281EBA91005FD952 /* ProfileVC.swift in Sources */,
@@ -374,6 +393,8 @@
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Messenger/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to  taka a profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo to your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -404,6 +425,8 @@
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Messenger/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to  taka a profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo to your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -446,6 +469,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78267126281FB039005FD952 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		78267128281FB039005FD952 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 782670EF281EB335005FD952 /* Project object */;
 }
