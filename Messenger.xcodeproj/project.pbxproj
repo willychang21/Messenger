@@ -24,6 +24,7 @@
 		78267129281FB03A005FD952 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 78267128281FB039005FD952 /* FirebaseDatabase */; };
 		7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7826712C281FD962005FD952 /* DatabaseManager.swift */; };
 		7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7826712E281FDBF3005FD952 /* GoogleService-Info.plist */; };
+		7826713228201385005FD952 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7826713128201385005FD952 /* FacebookLogin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		78267123281ED4A7005FD952 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7826712C281FD962005FD952 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			files = (
 				78267129281FB03A005FD952 /* FirebaseDatabase in Frameworks */,
 				78267127281FB039005FD952 /* FirebaseAuth in Frameworks */,
+				7826713228201385005FD952 /* FacebookLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +81,7 @@
 		782670F9281EB335005FD952 /* Messenger */ = {
 			isa = PBXGroup;
 			children = (
+				7826713328201400005FD952 /* Messenger.entitlements */,
 				7826710E281EB819005FD952 /* Resources */,
 				7826710F281EB824005FD952 /* ViewModels */,
 				78267110281EB82D005FD952 /* Models */,
@@ -173,6 +177,7 @@
 			packageProductDependencies = (
 				78267126281FB039005FD952 /* FirebaseAuth */,
 				78267128281FB039005FD952 /* FirebaseDatabase */,
+				7826713128201385005FD952 /* FacebookLogin */,
 			);
 			productName = Messenger;
 			productReference = 782670F7281EB335005FD952 /* Messenger.app */;
@@ -204,6 +209,7 @@
 			mainGroup = 782670EE281EB335005FD952;
 			packageReferences = (
 				78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				7826713028201385005FD952 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 782670F8281EB335005FD952 /* Products */;
 			projectDirPath = "";
@@ -388,6 +394,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Messenger/Messenger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
@@ -420,6 +427,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Messenger/Messenger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
@@ -479,6 +487,14 @@
 				minimumVersion = 8.15.0;
 			};
 		};
+		7826713028201385005FD952 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 13.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -491,6 +507,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 78267125281FB039005FD952 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
+		};
+		7826713128201385005FD952 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7826713028201385005FD952 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
