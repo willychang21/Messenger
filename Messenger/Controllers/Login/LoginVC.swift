@@ -1,9 +1,18 @@
 import UIKit
 import FirebaseAuth
 import FacebookLogin
+import GoogleSignIn
 
 class LoginVC: UIViewController {
     
+    // Google - Sign in Config
+    private let clientID = "22490778398-pquuuplolqq5jml953p1gheiv9hupkj1.apps.googleusercontent.com"
+    // Create Google Sign In configuration object.
+    private lazy var googleConfig: GIDConfiguration = {
+      return GIDConfiguration(clientID: clientID)
+    }()
+    
+    // MARK: View
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -65,8 +74,23 @@ class LoginVC: UIViewController {
         return button
     }()
     
+    private let googleLoginButton: GIDSignInButton = {
+        let button = GIDSignInButton()
+        return button
+    }()
+    
+//    private var loginObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification,
+//                                                               object: nil,
+//                                                               queue: .main) { [weak self] _ in
+//            guard let strongSelf = self else { return }
+//            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+//        }
+        
         title = "Login"
         view.backgroundColor = .white
         
@@ -77,6 +101,10 @@ class LoginVC: UIViewController {
         loginButton.addTarget(self,
                               action: #selector(loginButtonTapped),
                               for: .touchUpInside)
+        
+        googleLoginButton.addTarget(self,
+                                    action: #selector(googleButtonTapped),
+                                    for: .touchUpInside)
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -90,7 +118,14 @@ class LoginVC: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleLoginButton)
     }
+    
+//    deinit {
+//        if let observer = loginObserver {
+//            NotificationCenter.default.removeObserver(observer)
+//        }
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -114,6 +149,10 @@ class LoginVC: UIViewController {
                                    height: 52)
         facebookLoginButton.frame = CGRect(x: 30,
                                            y: loginButton.bottom+10,
+                                           width: scrollView.width-60,
+                                           height: 52)
+        googleLoginButton.frame = CGRect(x: 30,
+                                           y: facebookLoginButton.bottom+10,
                                            width: scrollView.width-60,
                                            height: 52)
         
@@ -147,6 +186,58 @@ class LoginVC: UIViewController {
             
         }
         
+    }
+    
+    @objc func googleButtonTapped() {
+        GIDSignIn.sharedInstance.signIn(with: googleConfig, presenting: self) { [unowned self] user, error in
+            
+            if let error = error {
+                print("Fail to sign in with Google: \(error)")
+                return
+            }
+            
+            guard let email = user?.profile?.email,
+                  let firtName = user?.profile?.givenName,
+                  let lastName = user?.profile?.familyName
+            else {
+                return
+            }
+            
+            guard let user = user else {
+                return
+            }
+            
+            print("Did sign in with Google: \(user)")
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists {
+                    // insert to database
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firtName,
+                                                                        lastName: lastName,
+                                                                        emailAddress: email))
+                }
+            }
+            
+            
+            let authentication = user.authentication
+            guard let idToken = authentication.idToken else { return }
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self]authResult, error in
+                guard let strongSelf = self else {
+                    return
+                }
+                guard authResult != nil, error == nil else {
+                    print("failed to log in google credential")
+                    return
+                }
+                
+                print("Successfully signed in google credential.")
+               
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+//                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+            }
+        }
     }
     
     func alertUserLoginError() {
