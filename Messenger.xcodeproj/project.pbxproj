@@ -31,6 +31,9 @@
 		7879DB4C282150750017AC60 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB4B282150750017AC60 /* RealmSwift */; };
 		7879DB4F282151B10017AC60 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB4E282151B10017AC60 /* JGProgressHUD */; };
 		7879DB51282157090017AC60 /* ChatViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB50282157090017AC60 /* ChatViewVC.swift */; };
+		7879DB54282172870017AC60 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB53282172870017AC60 /* FirebaseDatabase */; };
+		7879DB57282172CA0017AC60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB56282172CA0017AC60 /* FirebaseStorage */; };
+		7879DB59282175330017AC60 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB58282175330017AC60 /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +56,7 @@
 		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
 		7879DB50282157090017AC60 /* ChatViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewVC.swift; sourceTree = "<group>"; };
+		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +67,11 @@
 				7879DB49282149E30017AC60 /* SDWebImage in Frameworks */,
 				78267129281FB03A005FD952 /* FirebaseDatabase in Frameworks */,
 				7879DB4C282150750017AC60 /* RealmSwift in Frameworks */,
+				7879DB57282172CA0017AC60 /* FirebaseStorage in Frameworks */,
 				7879DB3D2820D6EF0017AC60 /* GoogleSignIn in Frameworks */,
 				7879DB4F282151B10017AC60 /* JGProgressHUD in Frameworks */,
 				78267127281FB039005FD952 /* FirebaseAuth in Frameworks */,
+				7879DB54282172870017AC60 /* FirebaseDatabase in Frameworks */,
 				7826713228201385005FD952 /* FacebookLogin in Frameworks */,
 				7879DB46282148600017AC60 /* MessageKit in Frameworks */,
 			);
@@ -112,6 +118,7 @@
 				782670FC281EB335005FD952 /* SceneDelegate.swift */,
 				78267123281ED4A7005FD952 /* Extensions.swift */,
 				7826712C281FD962005FD952 /* DatabaseManager.swift */,
+				7879DB58282175330017AC60 /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -196,6 +203,8 @@
 				7879DB48282149E30017AC60 /* SDWebImage */,
 				7879DB4B282150750017AC60 /* RealmSwift */,
 				7879DB4E282151B10017AC60 /* JGProgressHUD */,
+				7879DB53282172870017AC60 /* FirebaseDatabase */,
+				7879DB56282172CA0017AC60 /* FirebaseStorage */,
 			);
 			productName = Messenger;
 			productReference = 782670F7281EB335005FD952 /* Messenger.app */;
@@ -233,6 +242,8 @@
 				7879DB47282149E30017AC60 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				7879DB4A282150750017AC60 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				7879DB4D282151B10017AC60 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				7879DB52282172870017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				7879DB55282172CA0017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 782670F8281EB335005FD952 /* Products */;
 			projectDirPath = "";
@@ -274,6 +285,7 @@
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
 				78267119281EBA07005FD952 /* RegisterVC.swift in Sources */,
+				7879DB59282175330017AC60 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,6 +571,22 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		7879DB52282172870017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 8.15.0;
+			};
+		};
+		7879DB55282172CA0017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 8.15.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -601,6 +629,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7879DB4D282151B10017AC60 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
 			productName = JGProgressHUD;
+		};
+		7879DB53282172870017AC60 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7879DB52282172870017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		7879DB56282172CA0017AC60 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7879DB52282172870017AC60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
