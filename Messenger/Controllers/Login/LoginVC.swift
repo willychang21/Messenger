@@ -2,8 +2,11 @@ import UIKit
 import FirebaseAuth
 import FacebookLogin
 import GoogleSignIn
+import JGProgressHUD
 
 class LoginVC: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     // Google - Sign in Config
     private let clientID = "22490778398-pquuuplolqq5jml953p1gheiv9hupkj1.apps.googleusercontent.com"
@@ -170,11 +173,18 @@ class LoginVC: UIViewController {
             return
         }
         
+        spinner.show(in: view)
+        
         // MARK: Firebase Log in
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else {
                 return
             }
+                    
+            DispatchQueue.main.async {
+                strongSelf.spinner.dismiss()
+            }
+  
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
                 return
@@ -188,6 +198,7 @@ class LoginVC: UIViewController {
         
     }
     
+    // MARK: Google Login in
     @objc func googleButtonTapped() {
         GIDSignIn.sharedInstance.signIn(with: googleConfig, presenting: self) { [unowned self] user, error in
             
@@ -276,7 +287,9 @@ extension LoginVC: UITextFieldDelegate {
     }
 }
 
+// MARK: Facebook Login
 extension LoginVC: LoginButtonDelegate {
+    
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
         // no operation
     }

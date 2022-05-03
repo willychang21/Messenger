@@ -109,12 +109,39 @@
       }
     },
     {
+      "identity" : "inputbaraccessoryview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nathantannar4/InputBarAccessoryView",
+      "state" : {
+        "revision" : "2843b4454cfb6de5b4d1e5939fef2dd6257b69ee",
+        "version" : "5.5.0"
+      }
+    },
+    {
+      "identity" : "jgprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JonasGessner/JGProgressHUD",
+      "state" : {
+        "revision" : "78d7cd35f1d90ff74fd82e486f2cbe4b24be8cf9",
+        "version" : "2.2.0"
+      }
+    },
+    {
       "identity" : "leveldb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/leveldb.git",
       "state" : {
         "revision" : "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
         "version" : "1.22.2"
+      }
+    },
+    {
+      "identity" : "messagekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MessageKit/MessageKit",
+      "state" : {
+        "revision" : "84236d91ac5783e3ecbefc15b82d854476720115",
+        "version" : "3.8.0"
       }
     },
     {
@@ -133,6 +160,33 @@
       "state" : {
         "revision" : "46c1e6b5ac09d8f82c991061c659f67e573d425d",
         "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core",
+      "state" : {
+        "revision" : "472d325a2e844fcb48c400db74e6b9646f92ca93",
+        "version" : "11.15.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift",
+      "state" : {
+        "revision" : "41fe221e2209ad31bee35593513d957dc3e6e458",
+        "version" : "10.25.2"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage",
+      "state" : {
+        "revision" : "2e63d0061da449ad0ed130768d05dceb1496de44",
+        "version" : "5.12.5"
       }
     },
     {
