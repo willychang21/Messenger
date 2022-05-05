@@ -192,6 +192,8 @@ class LoginVC: UIViewController {
             }
             
             let user = result.user
+            
+            UserDefaults.standard.set(email, forKey: "email")
             print("Logged In User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             
@@ -210,10 +212,11 @@ class LoginVC: UIViewController {
             
             guard let email = user?.profile?.email,
                   let firtName = user?.profile?.givenName,
-                  let lastName = user?.profile?.familyName
-            else {
+                  let lastName = user?.profile?.familyName else {
                 return
             }
+            
+            UserDefaults.standard.set(email, forKey: "email")
             
             guard let user = user else {
                 return
@@ -358,6 +361,8 @@ extension LoginVC: LoginButtonDelegate {
                 print("Failed to get email and name from fb result")
                 return
             }
+            
+            UserDefaults.standard.set(email, forKey: "email")
             
             
             
