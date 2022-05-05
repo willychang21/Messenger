@@ -3,6 +3,8 @@ import JGProgressHUD
 
 class NewConversationVC: UIViewController {
     
+    public var completion: (([String: String]) -> (Void))?
+    
     private let spinner = JGProgressHUD(style: .dark)
     
     private var users = [[String: String]]()
@@ -78,6 +80,12 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // start conversation
+        let targetUserData = results[indexPath.row]
+        
+        dismiss(animated: true) { [weak self] in
+            self?.completion?(targetUserData)
+        }
+        
     }
 }
 extension NewConversationVC: UISearchBarDelegate {
@@ -140,7 +148,7 @@ extension NewConversationVC: UISearchBarDelegate {
         updateUI()
     }
     
-    func updateUI() {
+    func updateUI() { 
         if results.isEmpty {
             self.noResultLabel.isHidden = false
             self.tableView.isHidden = true

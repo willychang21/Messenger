@@ -30,7 +30,7 @@
 		7879DB49282149E30017AC60 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB48282149E30017AC60 /* SDWebImage */; };
 		7879DB4C282150750017AC60 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB4B282150750017AC60 /* RealmSwift */; };
 		7879DB4F282151B10017AC60 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB4E282151B10017AC60 /* JGProgressHUD */; };
-		7879DB51282157090017AC60 /* ChatViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB50282157090017AC60 /* ChatViewVC.swift */; };
+		7879DB51282157090017AC60 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB50282157090017AC60 /* ChatVC.swift */; };
 		7879DB54282172870017AC60 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB53282172870017AC60 /* FirebaseDatabase */; };
 		7879DB57282172CA0017AC60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB56282172CA0017AC60 /* FirebaseStorage */; };
 		7879DB59282175330017AC60 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB58282175330017AC60 /* StorageManager.swift */; };
@@ -55,7 +55,7 @@
 		7826712C281FD962005FD952 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
-		7879DB50282157090017AC60 /* ChatViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewVC.swift; sourceTree = "<group>"; };
+		7879DB50282157090017AC60 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,7 +155,7 @@
 				7826711C281EBA41005FD952 /* VideoPlayerVC.swift */,
 				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
-				7879DB50282157090017AC60 /* ChatViewVC.swift */,
+				7879DB50282157090017AC60 /* ChatVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -280,7 +280,7 @@
 				78267121281EBA91005FD952 /* ProfileVC.swift in Sources */,
 				782670FD281EB335005FD952 /* SceneDelegate.swift in Sources */,
 				78267124281ED4A7005FD952 /* Extensions.swift in Sources */,
-				7879DB51282157090017AC60 /* ChatViewVC.swift in Sources */,
+				7879DB51282157090017AC60 /* ChatVC.swift in Sources */,
 				78267117281EB9F7005FD952 /* LoginVC.swift in Sources */,
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
