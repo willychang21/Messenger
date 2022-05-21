@@ -34,6 +34,8 @@
 		7879DB54282172870017AC60 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB53282172870017AC60 /* FirebaseDatabase */; };
 		7879DB57282172CA0017AC60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB56282172CA0017AC60 /* FirebaseStorage */; };
 		7879DB59282175330017AC60 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB58282175330017AC60 /* StorageManager.swift */; };
+		789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F3F5F2835006D00EA5A7C /* ConversationsModels.swift */; };
+		78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D09E4228290A85004688AE /* ConversationTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +59,8 @@
 		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
 		7879DB50282157090017AC60 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		789F3F5F2835006D00EA5A7C /* ConversationsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsModels.swift; sourceTree = "<group>"; };
+		78D09E4228290A85004688AE /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +106,7 @@
 				7826713328201400005FD952 /* Messenger.entitlements */,
 				7826710E281EB819005FD952 /* Resources */,
 				7826710F281EB824005FD952 /* ViewModels */,
-				78267110281EB82D005FD952 /* Models */,
+				78267110281EB82D005FD952 /* Model */,
 				78267111281EB834005FD952 /* Views */,
 				78267112281EB839005FD952 /* Controllers */,
 				78267108281EB335005FD952 /* Info.plist */,
@@ -130,11 +134,12 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		78267110281EB82D005FD952 /* Models */ = {
+		78267110281EB82D005FD952 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				789F3F5F2835006D00EA5A7C /* ConversationsModels.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		78267111281EB834005FD952 /* Views */ = {
@@ -142,6 +147,7 @@
 			children = (
 				78267113281EB885005FD952 /* Storyboards */,
 				78267103281EB335005FD952 /* Assets.xcassets */,
+				78D09E4228290A85004688AE /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -150,12 +156,12 @@
 			isa = PBXGroup;
 			children = (
 				78267114281EB8F1005FD952 /* ConversationsVC.swift */,
-				78267122281ED093005FD952 /* Login */,
+				7879DB50282157090017AC60 /* ChatVC.swift */,
+				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
 				7826711A281EBA28005FD952 /* PhotoViewerVC.swift */,
 				7826711C281EBA41005FD952 /* VideoPlayerVC.swift */,
-				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
-				7879DB50282157090017AC60 /* ChatVC.swift */,
+				78267122281ED093005FD952 /* Login */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -283,8 +289,10 @@
 				7879DB51282157090017AC60 /* ChatVC.swift in Sources */,
 				78267117281EB9F7005FD952 /* LoginVC.swift in Sources */,
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
+				78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
 				78267119281EBA07005FD952 /* RegisterVC.swift in Sources */,
+				789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */,
 				7879DB59282175330017AC60 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

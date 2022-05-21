@@ -193,7 +193,23 @@ class LoginVC: UIViewController {
             
             let user = result.user
             
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+            DatabaseManager.shared.getDataFor(path: safeEmail) { result in
+                switch result {
+                case .success(let data):
+                    guard let userData = data as? [String: Any],
+                          let firstName = userData["first_name"] as? String,
+                          let lastName = userData["last_name"] as? String else {
+                        return
+                    }
+                    UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                case .failure(let error):
+                    print("Failed to read data with error: \(error)")
+                }
+            }
+            
             UserDefaults.standard.set(email, forKey: "email")
+            
             print("Logged In User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             
@@ -211,12 +227,14 @@ class LoginVC: UIViewController {
             }
             
             guard let email = user?.profile?.email,
-                  let firtName = user?.profile?.givenName,
+                  let firstName = user?.profile?.givenName,
                   let lastName = user?.profile?.familyName else {
                 return
             }
             
             UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+
             
             guard let user = user else {
                 return
@@ -226,7 +244,7 @@ class LoginVC: UIViewController {
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists {
                     // insert to database
-                    let chatUser = ChatAppUser(firstName: firtName,
+                    let chatUser = ChatAppUser(firstName: firstName,
                                                lastName: lastName,
                                                emailAddress: email)
                     DatabaseManager.shared.insertUser(with: chatUser) { success in
@@ -281,7 +299,7 @@ class LoginVC: UIViewController {
                 print("Successfully signed in google credential.")
                 
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-                //                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                // NotificationCenter.default.post(name: .didLogInNotification, object: nil)
             }
         }
     }
@@ -363,8 +381,7 @@ extension LoginVC: LoginButtonDelegate {
             }
             
             UserDefaults.standard.set(email, forKey: "email")
-            
-            
+            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
             
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists {
