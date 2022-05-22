@@ -1,22 +1,38 @@
 import UIKit
+import SDWebImage
 
 class PhotoViewerVC: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    private let url: URL
+    
+    init(with url: URL) {
+        self.url = url
+        super.init(nibName: nil, bundle: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    */
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Photo"
+        navigationItem.largeTitleDisplayMode = .never
+        view.backgroundColor = .black
+        view.addSubview(imageView)
+        imageView.sd_setImage(with: self.url, completed: nil)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        imageView.frame = view.bounds
+    }
+  
 
 }

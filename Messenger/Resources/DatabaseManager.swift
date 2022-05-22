@@ -1,5 +1,7 @@
 import Foundation
 import FirebaseDatabase
+import MessageKit
+import UIKit
 
 final class DatabaseManager {
     
@@ -377,23 +379,45 @@ extension DatabaseManager {
             
             let messages: [Message] = value.compactMap { dictionary in
                 guard let name = dictionary["name"] as? String,
-//                      let isRead = dictionary["is_read"] as? Bool,
+                      let isRead = dictionary["is_read"] as? Bool,
                       let messageID = dictionary["id"] as? String,
                       let content = dictionary["content"] as? String,
                       let senderEmail = dictionary["sender_email"] as? String,
-//                      let type = dictionary["type"] as? String,
+                      let type = dictionary["type"] as? String,
                       let dateString = dictionary["date"] as? String,
                       let date = ChatVC.dateFormatter.date(from: dateString) else {
                     print("get wrong messages")
                     return nil
                 }
+                
+                var kind: MessageKind?
+                if type == "photo" {
+                    // photo
+                    guard let imageUrl = URL(string: content),
+                          let placeholder = UIImage(systemName: "plus") else {
+                        return nil
+                    }
+                    let media = Media(url: imageUrl,
+                                      image: nil,
+                                      placeholderImage: placeholder,
+                                      size: CGSize(width: 300, height: 300))
+                    kind = .photo(media)
+                }
+                else {
+                    kind = .text(content)
+                }
+                
+                guard let finalKind = kind else {
+                    return nil
+                }
+                
                 let sender = Sender(photoURL: "",
                                     senderId: senderEmail,
                                     displayName: name)
                 return Message(sender: sender,
                                messageId: messageID,
                                sentDate: date,
-                               kind: .text(content))
+                               kind: finalKind)
             }
             
             completion(.success(messages))
@@ -432,7 +456,14 @@ extension DatabaseManager {
             switch newMessage.kind {
             case .text(let messageText):
                 message = messageText
-            case .attributedText(_), .photo(_), .video(_), .location(_), .emoji(_), .audio(_), .contact(_),.custom(_), .linkPreview(_):
+            case .attributedText(_):
+                break
+            case .photo(let mediaItem):
+                if let targetUrlString = mediaItem.url?.absoluteString {
+                    message = targetUrlString
+                }
+                break
+            case .video(_), .location(_), .emoji(_), .audio(_), .contact(_),.custom(_), .linkPreview(_):
                 break
             }
             
