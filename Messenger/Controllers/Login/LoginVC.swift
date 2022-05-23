@@ -83,17 +83,19 @@ class LoginVC: UIViewController {
         return button
     }()
     
-    //    private var loginObserver: NSObjectProtocol?
+//    private var loginObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification,
-        //                                                               object: nil,
-        //                                                               queue: .main) { [weak self] _ in
-        //            guard let strongSelf = self else { return }
-        //            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-        //        }
+//        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification,
+//                                                               object: nil,
+//                                                               queue: .main) { [weak self] _ in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+//        }
         
         title = "Login"
         view.backgroundColor = .white
@@ -125,11 +127,11 @@ class LoginVC: UIViewController {
         scrollView.addSubview(googleLoginButton)
     }
     
-    //    deinit {
-    //        if let observer = loginObserver {
-    //            NotificationCenter.default.removeObserver(observer)
-    //        }
-    //    }
+//    deinit {
+//        if let observer = loginObserver {
+//            NotificationCenter.default.removeObserver(observer)
+//        }
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -210,7 +212,7 @@ class LoginVC: UIViewController {
             
             UserDefaults.standard.set(email, forKey: "email")
             
-            print("Logged In User: \(user)")
+            print("Successfully Logged In Firebase User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             
         }
@@ -299,7 +301,7 @@ class LoginVC: UIViewController {
                 print("Successfully signed in google credential.")
                 
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-                // NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+//                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
             }
         }
     }
@@ -323,21 +325,6 @@ class LoginVC: UIViewController {
     }
     
     
-}
-
-extension LoginVC: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if textField == emailField {
-            passwordField.becomeFirstResponder()
-        }
-        else if textField == passwordField {
-            loginButtonTapped()
-        }
-        
-        return true
-    }
 }
 
 // MARK: Facebook Login
@@ -436,7 +423,7 @@ extension LoginVC: LoginButtonDelegate {
                     return
                 }
                 
-                print("Succedssfully logged user in")
+                print("Succedssfully logged Facebook user in")
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 
             }
@@ -445,4 +432,19 @@ extension LoginVC: LoginButtonDelegate {
         
     }
     
+}
+
+extension LoginVC: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == emailField {
+            passwordField.becomeFirstResponder()
+        }
+        else if textField == passwordField {
+            loginButtonTapped()
+        }
+        
+        return true
+    }
 }
