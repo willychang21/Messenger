@@ -17,7 +17,7 @@ class ConversationsVC : UIViewController {
     }()
     
     private let noConversationsLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "No Conversations!"
         label.textAlignment = .center
         label.textColor = .gray
@@ -78,11 +78,9 @@ class ConversationsVC : UIViewController {
         present(navVC, animated: true)
     }
     
-    private func createNewConversation(result: [String: String]) {
-        guard let name = result["name"],
-              let email = result["email"] else {
-            return
-        }
+    private func createNewConversation(result: SearchResult) {
+        let name = result.name
+        let email = result.email
         let vc = ChatVC(with: email, id: nil)
         vc.isNewConversation = true
         vc.title = name
@@ -97,7 +95,7 @@ class ConversationsVC : UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         validateAuth()
     }
     
