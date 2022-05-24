@@ -12,6 +12,7 @@ A beginners swift project to create a real time chat application in Swift 5 usin
 * Deleting Conversations
 * User Profile
 * Dark Mode Support
-
-
+## Future
+* Apple Login
+* Group Chat
 
