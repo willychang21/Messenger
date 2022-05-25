@@ -19,12 +19,10 @@ class NewConversationCell: UITableViewCell {
         return label
     }()
 
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(userImageView)
         contentView.addSubview(userNameLabel)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +39,6 @@ class NewConversationCell: UITableViewCell {
                                      y: 20,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: 50)
-      
     }
     
     public func configure(with model: SearchResult) {
@@ -60,5 +57,4 @@ class NewConversationCell: UITableViewCell {
             }
         }
     }
-    
 }

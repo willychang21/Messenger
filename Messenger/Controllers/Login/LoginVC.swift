@@ -41,7 +41,7 @@ class LoginVC: UIViewController {
         field.placeholder = "Email Address..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -56,7 +56,7 @@ class LoginVC: UIViewController {
         field.placeholder = "Password..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         field.isSecureTextEntry = true
         return field
     }()
@@ -98,7 +98,7 @@ class LoginVC: UIViewController {
 //        }
         
         title = "Login"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground // introduce in iOS 13 (semantic color palette
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
                                                             style: .done,
@@ -137,10 +137,10 @@ class LoginVC: UIViewController {
         super.viewDidLayoutSubviews()
         scrollView.frame = view.bounds
         let size = scrollView.width/3
-        imageView.frame = CGRect(x: (scrollView.width-size)/2,
+        imageView.frame = CGRect(x: (scrollView.width-size*1.5)/2,
                                  y: 20,
-                                 width: size,
-                                 height: size)
+                                 width: size*1.5,
+                                 height: size*1.5)
         emailField.frame = CGRect(x: 30,
                                   y: imageView.bottom+10,
                                   width: scrollView.width-60,
