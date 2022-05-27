@@ -46,6 +46,10 @@ class ProfileVC: UIViewController {
                     return
                 }
                 
+                // reset the cache in UserDefaults
+                UserDefaults.standard.setValue(nil, forKey: "name")
+                UserDefaults.standard.setValue(nil, forKey: "email")
+                
                 // Facebook - Log Out
                 FacebookLogin.LoginManager().logOut()
                 
@@ -53,6 +57,7 @@ class ProfileVC: UIViewController {
                 GIDSignIn.sharedInstance.signOut()
                 
                 do {
+                    // Firebase - Log out
                     try FirebaseAuth.Auth.auth().signOut()
                     
                     let vc = LoginVC()
@@ -109,7 +114,7 @@ class ProfileVC: UIViewController {
             
             switch result {
             case .success(let url):
-                imageView.sd_setImage(with: url, completed: nil)
+                imageView.sd_setImage(with: url, completed: nil) // store in cache, faster than URLSession
                 //                self?.downloadImage(imageView: imageView, url: url)
             case .failure(let error):
                 print("Failed to get download url: \(error)")
@@ -166,7 +171,7 @@ class ProfileTableViewCell: UITableViewCell {
         switch viewModel.viewModelType {
         case .info:
             self.textLabel?.textAlignment = .left
-            self.selectionStyle = .none 
+            self.selectionStyle = .none
         case .logout:
             self.textLabel?.textColor = .red
             self.textLabel?.textAlignment = .center

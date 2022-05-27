@@ -186,8 +186,8 @@ class RegisterVC: UIViewController {
         }
         
         spinner.show(in: view)
-        // MARK: Firebase Register
         
+        // MARK: Firebase Register
         DatabaseManager.shared.userExists(with: email) {  [weak self] exists in
             guard let strongSelf = self else {
                 return
@@ -208,6 +208,10 @@ class RegisterVC: UIViewController {
             guard let strongSelf = self else {
                 return
             }
+            
+            // set UserDefaults
+            UserDefaults.standard.setValue(email, forKey: "name")
+            UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "email")
             
             guard authResult != nil, error == nil else {
                 print("Error creating user")

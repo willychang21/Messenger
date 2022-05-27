@@ -2,7 +2,7 @@
 A beginners swift project to create a real time chat application in Swift 5 using Firebase.
 ## Development Tool Version (Using SPM not CocoaPods)
 * Xcode: 13.3 (13E113)
-* Firebas: 8.15.0
+* Firebase: 8.15.0
 * GoogleSignIn: 6.1.0
 * Facebook: 13.2.0
 * MessageKit: 3.8.0
