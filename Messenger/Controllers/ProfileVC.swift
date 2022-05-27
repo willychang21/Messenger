@@ -4,17 +4,7 @@ import FacebookLogin
 import GoogleSignIn
 import SDWebImage
 
-enum ProfileViewModelType {
-    case info, logout
-}
-
-struct ProfileViewModel {
-    let viewModelType: ProfileViewModelType
-    let title: String
-    let handler: (() -> Void)?
-}
-
-class ProfileVC: UIViewController {
+final class ProfileVC: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     
@@ -111,7 +101,7 @@ class ProfileVC: UIViewController {
         headerView.addSubview(imageView)
         
         StorageManager.shared.downloadURL(for: path) { result in
-            
+            // this imageView is already above, do not need to be strongSelf
             switch result {
             case .success(let url):
                 imageView.sd_setImage(with: url, completed: nil) // store in cache, faster than URLSession
@@ -170,11 +160,11 @@ class ProfileTableViewCell: UITableViewCell {
         
         switch viewModel.viewModelType {
         case .info:
-            self.textLabel?.textAlignment = .left
-            self.selectionStyle = .none
+            textLabel?.textAlignment = .left
+            selectionStyle = .none
         case .logout:
-            self.textLabel?.textColor = .red
-            self.textLabel?.textAlignment = .center
+            textLabel?.textColor = .red
+            textLabel?.textAlignment = .center
         }
     }
 }

@@ -6,59 +6,9 @@ import AVFoundation
 import AVKit
 import CoreLocation
 
-struct Message: MessageType {
-    public var sender: SenderType
-    public var messageId: String
-    public var sentDate: Date
-    public var kind: MessageKind
-}
 
-extension MessageKind {
-    var messageKindString: String {
-        switch self {
-        case .text(_):
-            return "text"
-        case .attributedText(_):
-            return "attributedText"
-        case .photo(_):
-            return "photo"
-        case .video(_):
-            return "video"
-        case .location(_):
-            return "location"
-        case .emoji(_):
-            return "emoji"
-        case .audio(_):
-            return "audio"
-        case .contact(_):
-            return "contact"
-        case .linkPreview(_):
-            return "linkPreview"
-        case .custom(_):
-            return "custom"
-        }
-    }
-}
 
-struct Sender: SenderType {
-    public var photoURL: String
-    public var senderId: String
-    public var displayName: String
-}
-
-struct Media: MediaItem {
-    var url: URL?
-    var image: UIImage?
-    var placeholderImage: UIImage
-    var size: CGSize
-}
-
-struct Location: LocationItem {
-    var location: CLLocation
-    var size: CGSize
-}
-
-class ChatVC: MessagesViewController {
+final class ChatVC: MessagesViewController {
     
     private var senderPhotoURL: URL?
     private var otherUserPhotoURL: URL?
@@ -89,6 +39,9 @@ class ChatVC: MessagesViewController {
     }
     
     init(with email: String, id: String?) {
+        // initializer
+        // we could get rid of some of self. because of name collide, but it's just better pratice to leave them,
+        // just signal it's a constructor.
         self.conversationId = id
         self.otherUserEmail = email
         super.init(nibName: nil, bundle: nil)
@@ -598,7 +551,7 @@ extension ChatVC: MessageCellDelegate {
             let coordinates = locationData.location.coordinate
             let vc = LocationPickerVC(coordinates: coordinates)
             vc.title = "Location"
-            self.navigationController?.pushViewController(vc, animated: true )
+            navigationController?.pushViewController(vc, animated: true )
         default:
             break
         }
@@ -616,7 +569,7 @@ extension ChatVC: MessageCellDelegate {
                 return
             }
             let vc = PhotoViewerVC(with: imageUrl)
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         case .video(let media):
             guard let videoUrl = media.url else {
                 return

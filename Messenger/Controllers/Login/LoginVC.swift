@@ -5,7 +5,7 @@ import GoogleSignIn
 import JGProgressHUD
 import RealmSwift
 
-class LoginVC: UIViewController {
+final class LoginVC: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
