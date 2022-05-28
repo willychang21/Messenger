@@ -8,74 +8,44 @@ final class ProfileVC: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     
+    private var loginObserver: NSObjectProtocol?
+    
     var data = [ProfileViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(ProfileTableViewCell.self,
                            forCellReuseIdentifier: ProfileTableViewCell.identifier)
-        data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")",
-                                     handler: nil))
-        data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")",
-                                     handler: nil))
-        data.append(ProfileViewModel(viewModelType: .logout,
-                                     title: "Log Out",
-                                     handler: { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let actionSheet = UIAlertController(title: "Are you sure you want to log out?",
-                                                message: "I will miss you.",
-                                                preferredStyle: .actionSheet)
-            actionSheet.addAction(UIAlertAction(title: "Log out",
-                                                style: .destructive,
-                                                handler: { [weak self] _ in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                // reset the cache in UserDefaults
-                UserDefaults.standard.setValue(nil, forKey: "name")
-                UserDefaults.standard.setValue(nil, forKey: "email")
-                print("Logout name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Value")")
-                // Facebook - Log Out
-                FacebookLogin.LoginManager().logOut()
-                
-                // Google - Log out
-                GIDSignIn.sharedInstance.signOut()
-                
-                do {
-                    // Firebase - Log out
-                    try FirebaseAuth.Auth.auth().signOut()
-                    let vc = LoginVC()
-                    let nav = UINavigationController(rootViewController: vc)
-                    nav.modalPresentationStyle = .fullScreen
-                    strongSelf.present(nav, animated: false)
-                } catch {
-                    print("Failed to log out: \(error)")
-                }
-                
-            }))
-            
-            actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                                style: .cancel,
-                                                handler: nil))
-            
-            strongSelf.present(actionSheet, animated: true)
-        }))
+
+        userInfo()
+        logOut()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
+        
+        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification,
+                                                               object: nil,
+                                                               queue: .main) { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            self?.tableView.tableHeaderView = strongSelf.createTableHeader()
+            strongSelf.updateUserInfo()
+        }
     }
     
     func createTableHeader() -> UIView? {
+        
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
         }
+        
+//        if let observer = loginObserver {
+//            NotificationCenter.default.removeObserver(observer)
+//        }
+        
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
         let fileName = safeEmail + "_profile_picture.png"
         
@@ -126,6 +96,82 @@ final class ProfileVC: UIViewController {
     //        }.resume()
     //    }
     
+    func userInfo() {
+        
+        guard let name = UserDefaults.standard.value(forKey: "name"),
+              let email = UserDefaults.standard.value(forKey: "email") else {
+            return
+        }
+        
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Name : \(name)",
+                                     handler: nil))
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Email : \(email)",
+                                     handler: nil))
+    }
+    
+    func logOut() {
+        
+        data.append(ProfileViewModel(viewModelType: .logout,
+                                     title: "Log Out",
+                                     handler: { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let actionSheet = UIAlertController(title: "Are you sure you want to log out?",
+                                                message: "I will miss you.",
+                                                preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Log out",
+                                                style: .destructive,
+                                                handler: { [weak self] _ in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                // reset the cache in UserDefaults
+                UserDefaults.standard.setValue(nil, forKey: "name")
+                UserDefaults.standard.setValue(nil, forKey: "email")
+                print("Logout name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Value")")
+                // Facebook - Log Out
+                FacebookLogin.LoginManager().logOut()
+                
+                // Google - Log out
+                GIDSignIn.sharedInstance.signOut()
+                
+                do {
+                    // Firebase - Log out
+                    try FirebaseAuth.Auth.auth().signOut()
+                    let vc = LoginVC()
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    strongSelf.present(nav, animated: false)
+                } catch {
+                    print("Failed to log out: \(error)")
+                }
+                
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                                style: .cancel,
+                                                handler: nil))
+            
+            strongSelf.present(actionSheet, animated: true)
+        }))
+    }
+    
+    func updateUserInfo() {
+        guard let name = UserDefaults.standard.value(forKey: "name"),
+              let email = UserDefaults.standard.value(forKey: "email") else {
+            print("update user info failed")
+            return
+        }
+        print("Successfully update user info.")
+        data[0].title = "Name : \(name)"
+        data[1].title = "Email : \(email)"
+        tableView.reloadData()
+    }
+    
 }
 
 extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
@@ -159,6 +205,7 @@ class ProfileTableViewCell: UITableViewCell {
         
         switch viewModel.viewModelType {
         case .info:
+            textLabel?.textColor = .label
             textLabel?.textAlignment = .left
             selectionStyle = .none
         case .logout:

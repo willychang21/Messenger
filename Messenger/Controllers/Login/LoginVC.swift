@@ -212,6 +212,7 @@ final class LoginVC: UIViewController {
             
             UserDefaults.standard.set(email, forKey: "email")
             print("Successfully Logged In Firebase User: \(user)")
+            NotificationCenter.default.post(name: .didLogInNotification, object: nil)
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             
         }
@@ -297,9 +298,9 @@ final class LoginVC: UIViewController {
                 }
                 
                 print("Successfully signed in google credential.")
-                
+                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-//                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                
             }
         }
     }
@@ -421,6 +422,7 @@ extension LoginVC: LoginButtonDelegate {
                     return
                 }
                 print("Succedssfully logged Facebook user in")
+                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 
             }

@@ -242,7 +242,7 @@ final class ChatVC: MessagesViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        messageInputBar.inputTextView.becomeFirstResponder()
+//        messageInputBar.inputTextView.becomeFirstResponder()
         if let conversationId = conversationId {
             listenForMessages(id: conversationId, shouldScrollToBottom: true)
         }

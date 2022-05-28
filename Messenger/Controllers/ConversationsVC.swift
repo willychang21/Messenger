@@ -31,7 +31,7 @@ final class ConversationsVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose,
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(didTapComposeButton))
         view.addSubview(tableView)
@@ -46,6 +46,7 @@ final class ConversationsVC : UIViewController {
                 return
             }
             strongSelf.startListeningForConversations()
+            print("Login to Update Conversation View")
         }
     }
     
@@ -54,9 +55,9 @@ final class ConversationsVC : UIViewController {
             return
         }
         
-        if let observer = loginObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
+//        if let observer = loginObserver {
+//            NotificationCenter.default.removeObserver(observer)
+//        }
             
         print("starting conversation fetch...")
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)

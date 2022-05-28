@@ -6,7 +6,7 @@ enum ProfileViewModelType {
 
 struct ProfileViewModel {
     let viewModelType: ProfileViewModelType
-    let title: String
+    var title: String
     let handler: (() -> Void)?
 }
 
