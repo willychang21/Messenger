@@ -213,18 +213,17 @@ extension DatabaseManager {
             let dateString = ChatVC.dateFormatter.string(from: messageDate)
             
             var message = ""
-            
             switch firstMessage.kind {
             case .text(let messageText):
                 message = messageText
             case .attributedText(_):
                 break
             case .photo(_):
-                break
+                message = "sent a image"
             case .video(_):
-                break
+                message = "sent a video"
             case .location(_):
-                break
+                message = "sent a location"
             case .emoji(_):
                 break
             case .audio(_):
@@ -236,6 +235,7 @@ extension DatabaseManager {
             case .custom(_):
                 break
             }
+            
             let conversationId = "conversation_\(firstMessage.messageId)"
             let newConversationData: [String: Any] = [
                 "id": conversationId,
@@ -329,7 +329,28 @@ extension DatabaseManager {
         switch firstMessage.kind {
         case .text(let messageText):
             message = messageText
-        case .attributedText(_), .photo(_), .video(_), .location(_), .emoji(_), .audio(_), .contact(_),.custom(_), .linkPreview(_):
+        case .attributedText(_):
+            break
+        case .photo(let mediaItem):
+            if let targetUrlString = mediaItem.url?.absoluteString {
+                message = targetUrlString
+            }
+        case .video(let mediaItem):
+            if let targetUrlString = mediaItem.url?.absoluteString {
+                message = targetUrlString
+            }
+        case .location(let locationData):
+            let location = locationData.location
+            message = "\(location.coordinate.longitude),\(location.coordinate.latitude)"
+        case .emoji(_):
+            break
+        case .audio(_):
+            break
+        case .contact(_):
+            break
+        case .linkPreview(_):
+            break
+        case .custom(_):
             break
         }
         
@@ -355,7 +376,7 @@ extension DatabaseManager {
             ]
         ]
         
-        print("adding conversation: \(conversationID  )")
+        print("adding conversation: \(conversationID)")
         
         database.child("\(conversationID)").setValue(value) { error, _ in
             guard error == nil else {
@@ -507,6 +528,7 @@ extension DatabaseManager {
             let dateString = ChatVC.dateFormatter.string(from: messageDate)
             
             var message = ""
+            var nonTextMessage = ""
             switch newMessage.kind {
             case .text(let messageText):
                 message = messageText
@@ -516,17 +538,25 @@ extension DatabaseManager {
                 if let targetUrlString = mediaItem.url?.absoluteString {
                     message = targetUrlString
                 }
-                break
+                nonTextMessage = "sent a image"
             case .video(let mediaItem):
                 if let targetUrlString = mediaItem.url?.absoluteString {
                     message = targetUrlString
                 }
-                break
+                nonTextMessage = "sent a video"
             case .location(let locationData):
                 let location = locationData.location
                 message = "\(location.coordinate.longitude),\(location.coordinate.latitude)"
+                nonTextMessage = "sent a location"
+            case .emoji(_):
                 break
-            case .emoji(_), .audio(_), .contact(_),.custom(_), .linkPreview(_):
+            case .audio(_):
+                break
+            case .contact(_):
+                break
+            case .linkPreview(_):
+                break
+            case .custom(_):
                 break
             }
             
@@ -557,11 +587,23 @@ extension DatabaseManager {
                 strongSelf.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value) { snapshot in
                     
                     var databaseEntryConversations = [[String: Any]]()
-                    let updatedValue: [String: Any] = [
-                        "date": dateString,
-                        "is_read": false,
-                        "message": message
-                    ]
+                    let updatedValue: [String: Any]
+                    
+                    if newMessageEntry["type"] as? String == "text" {
+                        updatedValue = [
+                            "date": dateString,
+                            "is_read": false,
+                            "message": message
+                        ]
+                    }
+                    else {
+                        updatedValue = [
+                            "date": dateString,
+                            "is_read": false,
+                            "message": nonTextMessage
+                        ]
+                    }
+                     
                     
                     if var currentUserConversations = snapshot.value as? [[String: Any]] {
                         // we need to create conversation entry
