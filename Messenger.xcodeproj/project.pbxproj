@@ -117,7 +117,6 @@
 			children = (
 				7826713328201400005FD952 /* Messenger.entitlements */,
 				7826710E281EB819005FD952 /* Resources */,
-				7826710F281EB824005FD952 /* ViewModels */,
 				78267110281EB82D005FD952 /* Model */,
 				78267111281EB834005FD952 /* Views */,
 				78267112281EB839005FD952 /* Controllers */,
@@ -137,13 +136,6 @@
 				7879DB58282175330017AC60 /* StorageManager.swift */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		7826710F281EB824005FD952 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		78267110281EB82D005FD952 /* Model */ = {

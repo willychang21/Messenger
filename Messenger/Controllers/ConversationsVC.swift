@@ -11,7 +11,7 @@ final class ConversationsVC : UIViewController {
     
     private var loginObserver: NSObjectProtocol?
     
-    private let tableView: UITableView = {
+    public let tableView: UITableView = {
         let table = UITableView()
         table.isHidden = true
         table.register(ConversationTableViewCell.self,
@@ -60,7 +60,7 @@ final class ConversationsVC : UIViewController {
             
         print("starting conversation fetch...")
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        print("safetEmail: \(safeEmail)")
+        print("safeEmail: \(safeEmail)")
         DatabaseManager.shared.getAllConversations(for: safeEmail) { [weak self] result in
             switch result {
             case .success(let conversations):
@@ -217,7 +217,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             
             DatabaseManager.shared.deleteConversation(conversationId: conversationId) { success in
                 if !success {
-                    // add model and row back and show error alert 
+                    // add model and row back and show error alert
                     print("Failed to delete")
                 }
             }

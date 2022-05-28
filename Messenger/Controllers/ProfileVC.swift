@@ -27,7 +27,7 @@ final class ProfileVC: UIViewController {
                 return
             }
             let actionSheet = UIAlertController(title: "Are you sure you want to log out?",
-                                                message: "",
+                                                message: "I will miss you.",
                                                 preferredStyle: .actionSheet)
             actionSheet.addAction(UIAlertAction(title: "Log out",
                                                 style: .destructive,
@@ -39,7 +39,7 @@ final class ProfileVC: UIViewController {
                 // reset the cache in UserDefaults
                 UserDefaults.standard.setValue(nil, forKey: "name")
                 UserDefaults.standard.setValue(nil, forKey: "email")
-                
+                print("Logout name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Value")")
                 // Facebook - Log Out
                 FacebookLogin.LoginManager().logOut()
                 
@@ -49,7 +49,6 @@ final class ProfileVC: UIViewController {
                 do {
                     // Firebase - Log out
                     try FirebaseAuth.Auth.auth().signOut()
-                    
                     let vc = LoginVC()
                     let nav = UINavigationController(rootViewController: vc)
                     nav.modalPresentationStyle = .fullScreen

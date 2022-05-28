@@ -1,14 +1,10 @@
 # Messenger Real Time Chat App
 A beginners swift project to create a real time chat application in Swift 5 using Firebase.
-## Development Tool Version (Using SPM not CocoaPods)
-* Xcode: 13.3 (13E113)
-* Firebase: 8.15.0
-* GoogleSignIn: 6.1.0
-* Facebook: 13.2.0
-* MessageKit: 3.8.0
-* SDWebImage: 5.12.0
-* Realm: 10.25.2
-* JGProgressHUB: 2.2.0
+
+## IDM Version
+<img alt="GitHub repo size" src="https://img.shields.io/badge/Xcode-Version%2013.3%20(13E113)-blue">
+## Swift Package Manager
+<img alt="GitHub repo size" src="https://img.shields.io/badge/Firebase-8.15.0-orange"> <img alt="GitHub repo size" src="https://img.shields.io/badge/GoogleSignIn-6.1.0-orange"> <img alt="GitHub repo size" src="https://img.shields.io/badge/Facebook-13.2.0-blue"> <img alt="GitHub repo size" src="https://img.shields.io/badge/MessageKit-3.8.0-green"> <img alt="GitHub repo size" src="https://img.shields.io/badge/SDWebImage-5.12.0-red"> <img alt="GitHub repo size" src="https://img.shields.io/badge/JGProgressHUB-2.2.0-yellow">
 
 ## Features
 * Facebook Log In

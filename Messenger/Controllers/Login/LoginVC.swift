@@ -3,7 +3,7 @@ import FirebaseAuth
 import FacebookLogin
 import GoogleSignIn
 import JGProgressHUD
-import RealmSwift
+//import RealmSwift
 
 final class LoginVC: UIViewController {
     
@@ -211,7 +211,6 @@ final class LoginVC: UIViewController {
             }
             
             UserDefaults.standard.set(email, forKey: "email")
-            
             print("Successfully Logged In Firebase User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             
@@ -236,7 +235,6 @@ final class LoginVC: UIViewController {
             
             UserDefaults.standard.set(email, forKey: "email")
             UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
-
             
             guard let user = user else {
                 return
@@ -422,7 +420,6 @@ extension LoginVC: LoginButtonDelegate {
                     }
                     return
                 }
-                
                 print("Succedssfully logged Facebook user in")
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 
@@ -448,3 +445,4 @@ extension LoginVC: UITextFieldDelegate {
         return true
     }
 }
+
