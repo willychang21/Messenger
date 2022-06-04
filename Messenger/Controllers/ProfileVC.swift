@@ -12,6 +12,8 @@ final class ProfileVC: UIViewController {
     
     var data = [ProfileViewModel]()
     
+    var imageView = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(ProfileTableViewCell.self,
@@ -20,7 +22,6 @@ final class ProfileVC: UIViewController {
         userInfo()
         logOut()
         
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
@@ -34,6 +35,7 @@ final class ProfileVC: UIViewController {
             self?.tableView.tableHeaderView = strongSelf.createTableHeader()
             strongSelf.updateUserInfo()
         }
+        
     }
     
     func createTableHeader() -> UIView? {
@@ -56,7 +58,7 @@ final class ProfileVC: UIViewController {
                                               height: 300))
         headerView.backgroundColor = .link
         
-        let imageView = UIImageView(frame: CGRect(x: (view.width-150) / 2,
+        imageView = UIImageView(frame: CGRect(x: (view.width-150) / 2,
                                                   y: 75,
                                                   width: 150,
                                                   height: 150))
@@ -67,22 +69,34 @@ final class ProfileVC: UIViewController {
         imageView.layer.borderWidth = 3
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageView.width/2
-        headerView.addSubview(imageView)
+        imageView.isUserInteractionEnabled = true
+      
+        
         
         StorageManager.shared.downloadURL(for: path) { result in
             // this imageView is already above, do not need to be strongSelf
             switch result {
             case .success(let url):
-                imageView.sd_setImage(with: url, completed: nil) // store in cache, faster than URLSession
-                //                self?.downloadImage(imageView: imageView, url: url)
+                self.imageView.sd_setImage(with: url, completed: nil) // store in cache, faster than URLSession
+                // self?.downloadImage(imageView: imageView, url: url)
             case .failure(let error):
                 print("Failed to get download url: \(error)")
+                self.imageView.image = UIImage(systemName: "person.circle")
             }
         }
         
+        let gesture = UITapGestureRecognizer(target: self,
+                                             action: #selector(didTapChangeProfilePic))
+        imageView.addGestureRecognizer(gesture)
+        headerView.addSubview(imageView)
         return headerView
     }
     
+    @objc func didTapChangeProfilePic() {
+        presentPhotoActionSheet()
+    }
+    
+    /// deleted because using SDWebImage stored the image in cache can reduce the data fetch
     //    func downloadImage(imageView: UIImageView, url: URL) {
     //        URLSession.shared.dataTask(with: url) { data, _, error in
     //            guard let data = data, error == nil else {
@@ -100,6 +114,7 @@ final class ProfileVC: UIViewController {
         
         guard let name = UserDefaults.standard.value(forKey: "name"),
               let email = UserDefaults.standard.value(forKey: "email") else {
+            print("Do not have user's information")
             return
         }
         
@@ -146,8 +161,8 @@ final class ProfileVC: UIViewController {
                     let nav = UINavigationController(rootViewController: vc)
                     nav.modalPresentationStyle = .fullScreen
                     strongSelf.present(nav, animated: false)
-                } catch {
-                    print("Failed to log out: \(error)")
+                } catch let signOutError as NSError {
+                    print("Error signing out: %@", signOutError)
                 }
                 
             }))
@@ -212,5 +227,78 @@ class ProfileTableViewCell: UITableViewCell {
             textLabel?.textColor = .red
             textLabel?.textAlignment = .center
         }
+    }
+}
+
+extension ProfileVC: UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
+    func presentPhotoActionSheet() {
+        print("Click Image")
+        let actionSheet = UIAlertController(title: "Profile Picture",
+                                            message: "How would you like to select a picture?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Take Photo",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            // [weak self] -> self need to add question mark
+            self?.presentCamera()
+            
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            self?.presentPhotoPicker()
+        }))
+        
+        present(actionSheet, animated: true)
+    }
+    
+    func presentCamera() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc, animated: true)
+    }
+    
+    func presentPhotoPicker() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        print(info)
+        guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+            return
+        }
+        self.imageView.image = selectedImage
+        // upload image
+      
+        guard let data = selectedImage.pngData(),
+              let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        let fileName = "\(safeEmail)_profile_picture.png"
+        StorageManager.shared.uploadProfilePicture(with: data,
+                                                   fileName: fileName) { result in
+            switch result {
+            case .success(let downloadUrl):
+                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                print(downloadUrl)
+            case .failure(let error):
+                print("Storage manager error: \(error)")
+            }
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

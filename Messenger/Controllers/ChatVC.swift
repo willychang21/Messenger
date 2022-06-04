@@ -40,7 +40,8 @@ final class ChatVC: MessagesViewController {
     
     init(with email: String, id: String?) {
         // initializer
-        // we could get rid of some of self. because of name collide, but it's just better pratice to leave them,
+        // we could get rid of some of self.
+        // because of name collide, but it's just better pratice to leave them,
         // just signal it's a constructor.
         self.conversationId = id
         self.otherUserEmail = email
@@ -54,8 +55,9 @@ final class ChatVC: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
-        
+        //view.backgroundColor = .blue
+        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0.0
+        messagesCollectionView.frame.origin.y = navBarHeight + 50.0
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -65,7 +67,16 @@ final class ChatVC: MessagesViewController {
         setupInputButton()
         
     }
-    // add plus botton
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        messageInputBar.inputTextView.becomeFirstResponder()
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId, shouldScrollToBottom: true)
+        }
+    }
+    
+    // add attach file botton
     private func setupInputButton() {
         let button = InputBarButtonItem()
         button.setSize(CGSize(width: 35, height: 35), animated: false)
@@ -104,6 +115,94 @@ final class ChatVC: MessagesViewController {
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         present(actionSheet, animated: true)
+    }
+    
+    private func presentPhotoInputActionSheet() {
+        let actionSheet = UIAlertController(title: "Attach Photo",
+                                            message: "Where would you like to attach a photo from?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Camera",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            let picker = UIImagePickerController()
+            picker.sourceType = .camera
+            picker.delegate = self
+            picker.allowsEditing = true
+            self?.present(picker, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Photo Library",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            let picker = UIImagePickerController()
+            picker.sourceType = .photoLibrary
+            picker.delegate = self
+            picker.allowsEditing = true
+            self?.present(picker, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
+        present(actionSheet, animated: true)
+    }
+    
+    private func presentVideoInputActionSheet() {
+        let actionSheet = UIAlertController(title: "Attach Video",
+                                            message: "Where would you like to attach a video from?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Camera",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            let picker = UIImagePickerController()
+            picker.sourceType = .camera
+            picker.delegate = self
+            picker.mediaTypes = ["public.movie"]
+            picker.videoQuality = .typeMedium
+            picker.allowsEditing = true
+            self?.present(picker, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Library",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+            let picker = UIImagePickerController()
+            picker.sourceType = .photoLibrary
+            picker.delegate = self
+            picker.allowsEditing = true
+            picker.mediaTypes = ["public.movie"]
+            picker.videoQuality = .typeMedium
+            self?.present(picker, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
+        present(actionSheet, animated: true)
+    }
+    
+    // Update all message from firebase
+    private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
+        
+        DatabaseManager.shared.getAllMessagesForConversation(with: id) { [weak self] result in
+            switch result {
+            case .success(let messages):
+                print("success in getting message: \(messages)")
+                guard !messages.isEmpty else {
+                    print("message is empty")
+                    return
+                }
+                self?.messages = messages
+                
+                
+                DispatchQueue.main.async {
+                    // user scroll to the top reading old message and the new messages come in, don't let the view auto scroll down, because is a bad experience
+                    
+                    self?.messagesCollectionView.reloadDataAndKeepOffset()
+                    
+                    if shouldScrollToBottom {
+                        self?.messagesCollectionView.scrollToLastItem(at: .bottom, animated: false)
+                    }
+                }
+                
+            case .failure(let error):
+                print("failed to get messages: \(error)")
+            }
+        }
     }
     
     // MARK: Location Input
@@ -183,98 +282,7 @@ final class ChatVC: MessagesViewController {
         
     }
     
-    private func presentPhotoInputActionSheet() {
-        let actionSheet = UIAlertController(title: "Attach Photo",
-                                            message: "Where would you like to attach a photo from?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Camera",
-                                            style: .default,
-                                            handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .camera
-            picker.delegate = self
-            picker.allowsEditing = true
-            self?.present(picker, animated: true)
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Photo Library",
-                                            style: .default,
-                                            handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .photoLibrary
-            picker.delegate = self
-            picker.allowsEditing = true
-            self?.present(picker, animated: true)
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        
-        present(actionSheet, animated: true)
-    }
-    
-    private func presentVideoInputActionSheet() {
-        let actionSheet = UIAlertController(title: "Attach Video",
-                                            message: "Where would you like to attach a video from?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Camera",
-                                            style: .default,
-                                            handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .camera
-            picker.delegate = self
-            picker.mediaTypes = ["public.movie"]
-            picker.videoQuality = .typeMedium
-            picker.allowsEditing = true
-            self?.present(picker, animated: true)
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Library",
-                                            style: .default,
-                                            handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .photoLibrary
-            picker.delegate = self
-            picker.allowsEditing = true
-            picker.mediaTypes = ["public.movie"]
-            picker.videoQuality = .typeMedium
-            self?.present(picker, animated: true)
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        
-        present(actionSheet, animated: true)
-    }
-    
-    private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
-        DatabaseManager.shared.getAllMessagesForConversation(with: id) { [weak self] result in
-            switch result {
-            case .success(let messages):
-                print("success in getting message: \(messages)")
-                guard !messages.isEmpty else {
-                    print("message is empty")
-                    return
-                }
-                self?.messages = messages
-                
-                
-                DispatchQueue.main.async {
-                    // user scroll to the top reading old message and the new messages come in, don't let the view auto scroll down, because is a bad experience
-                    self?.messagesCollectionView.reloadDataAndKeepOffset()
-                    
-                    if shouldScrollToBottom {
-                        self?.messagesCollectionView.scrollToLastItem()
-                    }
-                }
-                
-            case .failure(let error):
-                print("failed to get messages: \(error)")
-            }
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        messageInputBar.inputTextView.becomeFirstResponder()
-        if let conversationId = conversationId {
-            listenForMessages(id: conversationId, shouldScrollToBottom: true)
-        }
-    }
+
 }
 // MARK: Image & Video Input
 extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -573,6 +581,7 @@ extension ChatVC: InputBarAccessoryViewDelegate {
     }
 }
 
+// MARK: Chat Cell Data
 extension ChatVC: MessagesDataSource, MessagesLayoutDelegate,MessagesDisplayDelegate {
     
     func currentSender() -> SenderType {
@@ -675,7 +684,7 @@ extension ChatVC: MessagesDataSource, MessagesLayoutDelegate,MessagesDisplayDele
         }
     }
 }
-
+// MARK: Tap Chat Cell
 extension ChatVC: MessageCellDelegate {
     
     func didTapMessage(in cell: MessageCollectionViewCell) {

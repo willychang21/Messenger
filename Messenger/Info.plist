@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please allow access to take a profile picture</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Please allow access to select a photo for your profile.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Please allow access to send audio and video messages.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -55,5 +49,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

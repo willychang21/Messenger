@@ -3,11 +3,16 @@ import FirebaseAuth
 import FacebookLogin
 import GoogleSignIn
 import JGProgressHUD
+import AuthenticationServices
+import CryptoKit
 //import RealmSwift
 
 final class LoginVC: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
+    
+    // Unhashed nonce.
+    fileprivate var currentNonce: String?
     
     // Google - Sign in Config
     private let clientID = "22490778398-pquuuplolqq5jml953p1gheiv9hupkj1.apps.googleusercontent.com"
@@ -83,7 +88,28 @@ final class LoginVC: UIViewController {
         return button
     }()
     
+    private let appleLoginButton: ASAuthorizationAppleIDButton = {
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default,
+                                                  authorizationButtonStyle: .whiteOutline)
+        return button
+    }()
+    
 //    private var loginObserver: NSObjectProtocol?
+    
+    @available(iOS 13, *)
+    func startSignInWithAppleFlow() {
+      let nonce = randomNonceString()
+      currentNonce = nonce
+      let appleIDProvider = ASAuthorizationAppleIDProvider()
+      let request = appleIDProvider.createRequest()
+      request.requestedScopes = [.fullName, .email]
+      request.nonce = sha256(nonce)
+
+      let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+      authorizationController.delegate = self
+      authorizationController.presentationContextProvider = self
+      authorizationController.performRequests()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +138,11 @@ final class LoginVC: UIViewController {
                                     action: #selector(googleButtonTapped),
                                     for: .touchUpInside)
         
+        appleLoginButton.addTarget(self,
+                                   action: #selector(appleButtonTapped),
+                                   for: .touchUpInside)
+        
+        
         emailField.delegate = self
         passwordField.delegate = self
         
@@ -125,6 +156,7 @@ final class LoginVC: UIViewController {
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
         scrollView.addSubview(googleLoginButton)
+        scrollView.addSubview(appleLoginButton)
     }
     
 //    deinit {
@@ -161,10 +193,13 @@ final class LoginVC: UIViewController {
                                          y: facebookLoginButton.bottom+10,
                                          width: scrollView.width-60,
                                          height: 52)
-        
-        
+        appleLoginButton.frame = CGRect(x: 30,
+                                        y: googleLoginButton.bottom+10,
+                                        width: scrollView.width-60,
+                                        height: 52)
     }
     
+    // MARK: Firebase Log in
     @objc private func loginButtonTapped() {
         
         emailField.resignFirstResponder()
@@ -178,7 +213,6 @@ final class LoginVC: UIViewController {
         
         spinner.show(in: view)
         
-        // MARK: Firebase Log in
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else {
                 return
@@ -303,6 +337,25 @@ final class LoginVC: UIViewController {
                 
             }
         }
+    }
+    
+    // MARK: Apple Login in
+    @objc func appleButtonTapped() {
+        let request = creatAppleIdRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    func creatAppleIdRequest() -> ASAuthorizationAppleIDRequest {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let nonce = randomNonceString()
+        request.nonce = sha256(nonce)
+        currentNonce = nonce
+        return request
     }
     
     func alertUserLoginError() {
@@ -448,3 +501,134 @@ extension LoginVC: UITextFieldDelegate {
     }
 }
 
+// MARK: Apple Authorization Delegate
+extension LoginVC: ASAuthorizationControllerDelegate{
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+
+            // Create an account in your system.
+            guard let fullName = appleIDCredential.fullName else {
+                print("can not get user fullName")
+                return
+            }
+            guard let email = appleIDCredential.email else {
+                print("can not get user email")
+                return
+            }
+            guard var firstName = fullName.givenName else {
+                return
+            }
+            
+            if fullName.middleName != nil {
+                firstName = firstName + (fullName.middleName ?? "")
+            }
+            guard let lastName = fullName.familyName else {
+                return
+            }
+            
+            guard  let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unalbe to fetch identity token  ")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to seriaiez tokeb string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            
+
+            UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+            
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists {
+                    let chatUser = ChatAppUser(firstName: firstName,
+                                               lastName: lastName,
+                                               emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: chatUser) { success in
+                        if success {
+                            
+                            
+                        }
+                    }
+                }
+            }
+            
+            // Initialize a Firebase credential.
+            let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                           idToken: idTokenString,
+                                                           rawNonce: nonce)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                guard authResult != nil, error == nil else {
+                    if let error = error {
+                        print("Apple credential login failed, MFA may needed - \(error)")
+                    }
+                    return
+                }
+                print("Succedssfully logged Apple user in")
+                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                
+            }
+            
+        }
+    }
+}
+
+extension LoginVC: ASAuthorizationControllerPresentationContextProviding{
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+}
+
+// Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
+private func randomNonceString(length: Int = 32) -> String {
+  precondition(length > 0)
+  let charset: [Character] =
+    Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+  var result = ""
+  var remainingLength = length
+
+  while remainingLength > 0 {
+    let randoms: [UInt8] = (0 ..< 16).map { _ in
+      var random: UInt8 = 0
+      let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+      if errorCode != errSecSuccess {
+        fatalError(
+          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+        )
+      }
+      return random
+    }
+
+    randoms.forEach { random in
+      if remainingLength == 0 {
+        return
+      }
+
+      if random < charset.count {
+        result.append(charset[Int(random)])
+        remainingLength -= 1
+      }
+    }
+  }
+
+  return result
+}
+
+private func sha256(_ input: String) -> String {
+  let inputData = Data(input.utf8)
+  let hashedData = SHA256.hash(data: inputData)
+  let hashString = hashedData.compactMap {
+    String(format: "%02x", $0)
+  }.joined()
+
+  return hashString
+}
