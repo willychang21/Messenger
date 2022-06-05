@@ -506,25 +506,7 @@ extension LoginVC: ASAuthorizationControllerDelegate{
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
 
-            // Create an account in your system.
-            guard let fullName = appleIDCredential.fullName else {
-                print("can not get user fullName")
-                return
-            }
-            guard let email = appleIDCredential.email else {
-                print("can not get user email")
-                return
-            }
-            guard var firstName = fullName.givenName else {
-                return
-            }
-            
-            if fullName.middleName != nil {
-                firstName = firstName + (fullName.middleName ?? "")
-            }
-            guard let lastName = fullName.familyName else {
-                return
-            }
+            // ask apple server for token
             
             guard  let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login")
@@ -538,23 +520,40 @@ extension LoginVC: ASAuthorizationControllerDelegate{
                 return
             }
             
+            if let newEmail = appleIDCredential.email { // first time login
+                // check user exist
+                DatabaseManager.shared.userExists(with: newEmail) { exists in
+                    if !exists {
+                        // Create an account in your system.
+                        guard let fullName = appleIDCredential.fullName else {
+                            print("can not get user fullName")
+                            return
+                        }
+                      
+                        guard var firstName = fullName.givenName else {
+                            return
+                        }
 
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
-            
-            DatabaseManager.shared.userExists(with: email) { exists in
-                if !exists {
-                    let chatUser = ChatAppUser(firstName: firstName,
-                                               lastName: lastName,
-                                               emailAddress: email)
-                    DatabaseManager.shared.insertUser(with: chatUser) { success in
-                        if success {
-                            
-                            
+                        if fullName.middleName != nil {
+                            firstName = firstName + (fullName.middleName ?? "")
+                        }
+                        guard let lastName = fullName.familyName else {
+                            return
+                        }
+                        UserDefaults.standard.set(newEmail, forKey: "email")
+                        UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                        
+                        let chatUser = ChatAppUser(firstName: firstName,
+                                                   lastName: lastName,
+                                                   emailAddress: newEmail)
+                        DatabaseManager.shared.insertUser(with: chatUser) { success in
+
                         }
                     }
                 }
             }
+
+            
             
             // Initialize a Firebase credential.
             let credential = OAuthProvider.credential(withProviderID: "apple.com",
@@ -572,9 +571,26 @@ extension LoginVC: ASAuthorizationControllerDelegate{
                     }
                     return
                 }
-                print("Succedssfully logged Apple user in")
-                NotificationCenter.default.post(name: .didLogInNotification, object: nil)
-                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                guard let email = authResult?.user.email as? String else {
+                    return
+                }
+                DatabaseManager.shared.userExists(with: email) { exists in
+                    print("user exist")
+                }
+                UserDefaults.standard.set(email, forKey: "email")
+                print("Succedssfully logged Apple user in: \(email)")
+                DatabaseManager.shared.getUserName { result in
+                    switch result {
+                    case .failure(let error):
+                        print("fetch user name failed: \(error)")
+                    case .success(let name):
+                        print("user's name: \(name)")
+                        UserDefaults.standard.set(name, forKey: "name")
+                        NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                        strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                    }
+                }
+                
                 
             }
             

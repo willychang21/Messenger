@@ -149,6 +149,36 @@ extension DatabaseManager {
         }
     }
     
+    /// Get users' name from database
+    public func getUserName(completion: @escaping ((Result<String, Error>) -> Void)) {
+        database.child("users").observeSingleEvent(of: .value) { snapshot in
+            guard let users = snapshot.value as? [[String: String]]  else {
+                completion(.failure(DatabaseError.failToFetch))
+                return
+            }
+            guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+                return
+            }
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+            var userName: String?
+            _ = users.filter({
+                guard let email = $0["email"], email == safeEmail else {
+                    return false
+                }
+                guard let name = $0["name"] else {
+                    return false
+                }
+                userName = name
+                return true
+            })
+            guard let userName = userName else {
+                return
+            }
+            completion(.success(userName))
+        }
+
+    }
+    
     public enum DatabaseError: Error {
         case failToFetch
         
