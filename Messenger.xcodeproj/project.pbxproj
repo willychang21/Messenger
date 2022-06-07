@@ -25,7 +25,7 @@
 		7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7826712E281FDBF3005FD952 /* GoogleService-Info.plist */; };
 		7826713228201385005FD952 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7826713128201385005FD952 /* FacebookLogin */; };
 		7841ACC72849E50100F6626A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7841ACC62849E50100F6626A /* FirebaseMessaging */; };
-		7841ACC9284B92E800F6626A /* CreateUserInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7841ACC8284B92E800F6626A /* CreateUserInfoVC.swift */; };
+		78677E7A284CEC0800DA0945 /* AudioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78677E79284CEC0800DA0945 /* AudioVC.swift */; };
 		7879DB3D2820D6EF0017AC60 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB3C2820D6EF0017AC60 /* GoogleSignIn */; };
 		7879DB46282148600017AC60 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB45282148600017AC60 /* MessageKit */; };
 		7879DB49282149E30017AC60 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB48282149E30017AC60 /* SDWebImage */; };
@@ -45,6 +45,8 @@
 		789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F3F5F2835006D00EA5A7C /* ConversationsModels.swift */; };
 		789F3F62283B494B00EA5A7C /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F3F61283B494B00EA5A7C /* NewConversationCell.swift */; };
 		78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D09E4228290A85004688AE /* ConversationTableViewCell.swift */; };
+		78FF319A284D99E200BDA19C /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF3199284D99E100BDA19C /* UIImage+Extension.swift */; };
+		78FF319C284F245100BDA19C /* BasicAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF319B284F245100BDA19C /* BasicAudioController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,7 +67,7 @@
 		7826712C281FD962005FD952 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
-		7841ACC8284B92E800F6626A /* CreateUserInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserInfoVC.swift; sourceTree = "<group>"; };
+		78677E79284CEC0800DA0945 /* AudioVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVC.swift; sourceTree = "<group>"; };
 		7879DB50282157090017AC60 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		7896D5692840B00A0094A354 /* LocationPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerVC.swift; sourceTree = "<group>"; };
@@ -76,6 +78,8 @@
 		789F3F5F2835006D00EA5A7C /* ConversationsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsModels.swift; sourceTree = "<group>"; };
 		789F3F61283B494B00EA5A7C /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		78D09E4228290A85004688AE /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		78FF3199284D99E100BDA19C /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		78FF319B284F245100BDA19C /* BasicAudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAudioController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,8 +177,9 @@
 				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
 				7826711A281EBA28005FD952 /* PhotoViewerVC.swift */,
 				7896D5692840B00A0094A354 /* LocationPickerVC.swift */,
+				78677E79284CEC0800DA0945 /* AudioVC.swift */,
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
-				7841ACC8284B92E800F6626A /* CreateUserInfoVC.swift */,
+				78FF319B284F245100BDA19C /* BasicAudioController.swift */,
 				78267122281ED093005FD952 /* Login */,
 			);
 			path = Controllers;
@@ -202,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				78267123281ED4A7005FD952 /* UIView+Extension.swift */,
+				78FF3199284D99E100BDA19C /* UIImage+Extension.swift */,
 				7896D57A2843820D0094A354 /* Notification+Extension.swift */,
 			);
 			path = Extension;
@@ -347,16 +353,18 @@
 				78267121281EBA91005FD952 /* ProfileVC.swift in Sources */,
 				782670FD281EB335005FD952 /* SceneDelegate.swift in Sources */,
 				78267124281ED4A7005FD952 /* UIView+Extension.swift in Sources */,
+				78FF319A284D99E200BDA19C /* UIImage+Extension.swift in Sources */,
 				7896D575284104BC0094A354 /* SearchResult.swift in Sources */,
+				78677E7A284CEC0800DA0945 /* AudioVC.swift in Sources */,
 				7879DB51282157090017AC60 /* ChatVC.swift in Sources */,
 				78267117281EB9F7005FD952 /* LoginVC.swift in Sources */,
 				789F3F62283B494B00EA5A7C /* NewConversationCell.swift in Sources */,
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
 				78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
+				78FF319C284F245100BDA19C /* BasicAudioController.swift in Sources */,
 				78267119281EBA07005FD952 /* RegisterVC.swift in Sources */,
 				789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */,
-				7841ACC9284B92E800F6626A /* CreateUserInfoVC.swift in Sources */,
 				7896D57B2843820D0094A354 /* Notification+Extension.swift in Sources */,
 				7879DB59282175330017AC60 /* StorageManager.swift in Sources */,
 			);
@@ -542,6 +550,7 @@
 				CODE_SIGN_ENTITLEMENTS = Messenger/Messenger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Messenger/Info.plist;

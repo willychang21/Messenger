@@ -6,8 +6,6 @@ import AVFoundation
 import AVKit
 import CoreLocation
 
-
-
 final class ChatVC: MessagesViewController {
     
     private var senderPhotoURL: URL?
@@ -26,6 +24,10 @@ final class ChatVC: MessagesViewController {
     public var isNewConversation = false
     
     private var messages = [Message]()
+    
+    var audioRecorder: AVAudioRecorder!
+    private var audioVCObserver: NSObjectProtocol?
+    lazy var audioController = BasicAudioController(messageCollectionView: messagesCollectionView)
     
     private var selfSender: Sender?  {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
@@ -66,6 +68,11 @@ final class ChatVC: MessagesViewController {
         
         setupInputButton()
         
+        audioVCObserver = NotificationCenter.default.addObserver(forName: .audioVCDisappear,
+                                                                 object: nil,
+                                                                 queue: .main, using: { [weak self] _ in
+            self?.tabBarController?.tabBar.isHidden = false
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,6 +81,11 @@ final class ChatVC: MessagesViewController {
         if let conversationId = conversationId {
             listenForMessages(id: conversationId, shouldScrollToBottom: true)
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        audioController.stopAnyOngoingPlaying()
     }
     
     // add attach file botton
@@ -104,8 +116,8 @@ final class ChatVC: MessagesViewController {
         }))
         actionSheet.addAction(UIAlertAction(title: "Audio",
                                             style: .default,
-                                            handler: { _ in
-            
+                                            handler: { [weak self] _ in
+            self?.presentAudioInputView()
         }))
         actionSheet.addAction(UIAlertAction(title: "Location",
                                             style: .default,
@@ -282,6 +294,117 @@ final class ChatVC: MessagesViewController {
         
     }
     
+    // MARK: Audio Input
+    private func presentAudioInputView() {
+        let vc = AudioVC()
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.completion = { [weak self] url, audioDuration in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let messageId = strongSelf.createMessageId(),
+                  let name = strongSelf.title,
+                  let selfSender = strongSelf.selfSender else {
+                return
+            }
+            
+            // Send Message
+            if strongSelf.isNewConversation {
+                // create conversation in database
+                //let audio = try? Data(contentsOf: url)
+                let fileName = "audio_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".m4a"
+                // Upload Audio
+                StorageManager.shared.uploadMessageAudio(with: url, fileName: fileName) { [weak self] result in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    switch result {
+                    case .success(let urlString):
+                        // Ready to send message
+                        print("Upload Message Audio: \(urlString)")
+                        guard let audioUrl = URL(string: urlString) else {
+                            return
+                        }
+                        let audio = Audio(url: audioUrl,
+                                          duration: audioDuration,
+                                          size: CGSize(width: 200,
+                                                       height: 15))
+                        let message = Message(sender: selfSender,
+                                              messageId: messageId,
+                                              sentDate: Date(),
+                                              kind: .audio(audio))
+                        DatabaseManager.shared.createNewConversation(with: strongSelf.otherUserEmail,
+                                                                     name: name,
+                                                                     firstMessage: message) { [weak self] success in
+                            if success {
+                                print("message sent")
+                                self?.isNewConversation = false
+                                let newConversationId = "conversation_\(message.messageId)"
+                                self?.conversationId = newConversationId
+                                self?.listenForMessages(id: newConversationId, shouldScrollToBottom: true)
+                                self?.messageInputBar.inputTextView.text = nil
+                            }
+                            else {
+                                print("failed to send")
+                            }
+                        }
+                    case .failure(let error):
+                        print("message audio upload error: \(error)")
+                    }
+                }
+                
+            }
+            else {
+                // conversation already exists
+                guard let conversationId = strongSelf.conversationId else {
+                    return
+                }
+                let fileName = "audio_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".m4a"
+                // Upload Audio
+                StorageManager.shared.uploadMessageAudio(with: url, fileName: fileName) { [weak self] result in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    switch result {
+                    case .success(let urlString):
+                        // Ready to send message
+                        print("Upload Message Audio: \(urlString)")
+                        guard let audioUrl = URL(string: urlString) else {
+                            return
+                        }
+                        let audio = Audio(url: audioUrl,
+                                          duration: audioDuration,
+                                          size: CGSize(width: 200,
+                                                       height: 15))
+                        let message = Message(sender: selfSender,
+                                              messageId: messageId,
+                                              sentDate: Date(),
+                                              kind: .audio(audio))
+                        DatabaseManager.shared.sendMessage(to: conversationId,
+                                                           otherUserEmail: strongSelf.otherUserEmail,
+                                                           name: name,
+                                                           newMessage: message) { success in
+                            if success {
+                                print("sent audio message")
+                            }
+                            else {
+                                print("failed to send audio message")
+                            }
+                        }
+                    case .failure(let error):
+                        print("message audio upload error: \(error)")
+                    }
+                }
+            }
+            
+            
+        }
+        
+        // keep false
+        // modal animation will be handled in VC itself
+        self.tabBarController?.tabBar.isHidden = true
+        self.present(vc, animated: false)
+    }
 
 }
 // MARK: Image & Video Input
@@ -685,7 +808,7 @@ extension ChatVC: MessagesDataSource, MessagesLayoutDelegate,MessagesDisplayDele
     }
 }
 // MARK: Tap Chat Cell
-extension ChatVC: MessageCellDelegate {
+extension ChatVC: MessageCellDelegate, AVAudioPlayerDelegate {
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let indexPath = messagesCollectionView.indexPath(for: cell) else {
@@ -729,5 +852,32 @@ extension ChatVC: MessageCellDelegate {
             break
         }
     }
+    
+    func didTapPlayButton(in cell: AudioMessageCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell),
+        let message = messagesCollectionView.messagesDataSource?.messageForItem(at: indexPath, in: messagesCollectionView) else {
+            print("Failed to identify message when audio cell receive tap gesture")
+            return
+        }
+        guard audioController.state != .stopped else {
+            // There is no audio sound playing - prepare to start playing for given audio message
+            audioController.playSound(for: message, in: cell)
+            return
+        }
+        if audioController.playingMessage?.messageId == message.messageId {
+            // tap occur in the current cell that is playing audio sound
+            if audioController.state == .playing {
+                audioController.pauseSound(for: message, in: cell)
+            } else {
+                audioController.resumeSound()
+            }
+        } else {
+            // tap occur in a difference cell that the one is currently playing sound. First stop currently playing and start the sound for given message
+            audioController.stopAnyOngoingPlaying()
+            audioController.playSound(for: message, in: cell)
+        }
+    }
+
 }
+
 

@@ -3,6 +3,7 @@ import FirebaseDatabase
 import MessageKit
 import UIKit
 import CoreLocation
+import AVFoundation
 
 /// Manager object to read and write data to real time firebase database
 final class DatabaseManager {
@@ -249,7 +250,7 @@ extension DatabaseManager {
             case .attributedText(_):
                 break
             case .photo(_):
-                message = "sent a image"
+                message = "sent an image"
             case .video(_):
                 message = "sent a video"
             case .location(_):
@@ -257,7 +258,7 @@ extension DatabaseManager {
             case .emoji(_):
                 break
             case .audio(_):
-                break
+                message = "sent an audio"
             case .contact(_):
                 break
             case .linkPreview(_):
@@ -374,8 +375,9 @@ extension DatabaseManager {
             message = "\(location.coordinate.longitude),\(location.coordinate.latitude)"
         case .emoji(_):
             break
-        case .audio(_):
-            break
+        case .audio(let audioItem):
+            let targetUrlString = audioItem.url.absoluteString
+            message = targetUrlString
         case .contact(_):
             break
         case .linkPreview(_):
@@ -508,6 +510,18 @@ extension DatabaseManager {
                                             size: CGSize(width: 300, height: 300))
                     kind = .location(location)
                 }
+                else if type == "audio" {
+                    // audio
+                    guard let audioUrl = URL(string: content) else {
+                        return nil
+                    }
+                    let audioAsset = AVURLAsset(url: audioUrl)
+                    let audioDuration = Float(CMTimeGetSeconds(audioAsset.duration))
+                    let audio = Audio(url: audioUrl,
+                                      duration: audioDuration,
+                                      size: CGSize(width: 150, height: 30))
+                    kind = .audio(audio)
+                }
                 else {
                     kind = .text(content)
                 }
@@ -568,7 +582,7 @@ extension DatabaseManager {
                 if let targetUrlString = mediaItem.url?.absoluteString {
                     message = targetUrlString
                 }
-                nonTextMessage = "sent a image"
+                nonTextMessage = "sent an image"
             case .video(let mediaItem):
                 if let targetUrlString = mediaItem.url?.absoluteString {
                     message = targetUrlString
@@ -580,8 +594,10 @@ extension DatabaseManager {
                 nonTextMessage = "sent a location"
             case .emoji(_):
                 break
-            case .audio(_):
-                break
+            case .audio(let audioItem):
+                let targetUrlString = audioItem.url.absoluteString
+                message = targetUrlString
+                nonTextMessage = "sent an audio"
             case .contact(_):
                 break
             case .linkPreview(_):

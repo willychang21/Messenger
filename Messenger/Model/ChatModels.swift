@@ -54,3 +54,10 @@ struct Location: LocationItem {
     var location: CLLocation
     var size: CGSize
 }
+
+struct Audio: AudioItem {
+    var url: URL
+    var duration: Float
+    var size: CGSize
+}
+

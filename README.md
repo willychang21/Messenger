@@ -13,23 +13,24 @@ A beginners swift project to create a real time chat application in Swift 5 usin
 <img alt="GitHub repo size" src="https://img.shields.io/badge/JGProgressHUB-2.2.0-yellow">
 
 ## Features
-* Facebook Log In
-* Google Sign In
-* Email/Pass Registration / Log In
-* Photo Messages
-* Video Messages
+* Sign up / Sign in
+    * Facebook Sign In
+    * Google Sign In
+    * Apple Sign In
+    * Email / Pass Registration / Log In
 * Real Time Conversations
-* Location Messages
+* Message Type
+    * Text Messages
+    * Photo Messages
+    * Video Messages
+    * Location Messages
+        * Location Navigation
+    * Audio Messages
 * Search for Users
 * Deleting Conversations
 * User Profile
 * Dark Mode Support
+* FCM Push Notificaiton
 ## Future
-* Apple Login
 * Group Chat
 
-## Related
-
-Here are some related projects
-
-[SwiftChatApp](https://github.com/AfrazCodes/SwiftChatApp)

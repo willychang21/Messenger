@@ -14,11 +14,11 @@ final class StorageManager {
      /images/afraz0-email-com_profile_picture.png
      */
     
-    public typealias UploadPictureCompletion = (Result<String, Error>)-> Void
+    public typealias UploadFileCompletion = (Result<String, Error>)-> Void
     
     
     // Uploads picture to firebase storage and returns completion with url string to download
-    public func uploadProfilePicture(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
+    public func uploadProfilePicture(with data: Data, fileName: String, completion: @escaping UploadFileCompletion) {
         storage.child("images/\(fileName)").putData(data, metadata: nil) { [weak self] metadata, error in
             
             guard let strongSelf = self else {
@@ -48,7 +48,7 @@ final class StorageManager {
     }
     
     /// Upload image that will sent in a convesation message
-    public func uploadMessagePhoto(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
+    public func uploadMessagePhoto(with data: Data, fileName: String, completion: @escaping UploadFileCompletion) {
         storage.child("message_images/\(fileName)").putData(data, metadata: nil) { metadata, error in
             guard error == nil else {
                 // failed
@@ -73,11 +73,11 @@ final class StorageManager {
     }
     
     /// Upload video that will sent in a convesation message
-    public func uploadMessageVideo(with fileUrl: URL, fileName: String, completion: @escaping UploadPictureCompletion) {
+    public func uploadMessageVideo(with fileUrl: URL, fileName: String, completion: @escaping UploadFileCompletion) {
         storage.child("message_videos/\(fileName)").putFile(from: fileUrl, metadata: nil) { [weak self] metadata, error in
             guard error == nil else {
                 // failed
-                print("failed to upload video file to firebase for picture")
+                print("failed to upload video file to firebase for video")
                 completion(.failure(StorageErrors.failToUpload))
                 return
             }
@@ -96,6 +96,31 @@ final class StorageManager {
             }
         }
     }
+    
+    /// Upload audio that will sent in a conversation message
+    public func uploadMessageAudio(with fileUrl: URL, fileName: String, completion: @escaping UploadFileCompletion) {
+        storage.child("message_audios/\(fileName)").putFile(from: fileUrl, metadata: nil) { [weak self] metadata, error in
+            guard error == nil else {
+                // failed
+                print("fail to upload audio file to firebase for audio")
+                completion(.failure(StorageErrors.failToUpload))
+                return
+            }
+            
+            self?.storage.child("message_audios/\(fileName)").downloadURL(completion: { url, error in
+                guard let url = url else {
+                    print("Fail to get download audio url")
+                    completion(.failure(StorageErrors.failToGetDownloadUrl))
+                    return
+                }
+                
+                let urlString = url.absoluteString
+                print("download url returned: \(urlString)")
+                completion(.success(urlString))
+            })
+        }
+    }
+    
     public enum StorageErrors: Error {
         case failToUpload
         case failToGetDownloadUrl
