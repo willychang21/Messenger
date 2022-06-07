@@ -24,6 +24,8 @@
 		7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7826712C281FD962005FD952 /* DatabaseManager.swift */; };
 		7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7826712E281FDBF3005FD952 /* GoogleService-Info.plist */; };
 		7826713228201385005FD952 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7826713128201385005FD952 /* FacebookLogin */; };
+		7829F002284F633000228B69 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7829F001284F633000228B69 /* String+Extension.swift */; };
+		7829F004284F87AF00228B69 /* BindingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7829F003284F87AF00228B69 /* BindingTextField.swift */; };
 		7841ACC72849E50100F6626A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7841ACC62849E50100F6626A /* FirebaseMessaging */; };
 		78677E7A284CEC0800DA0945 /* AudioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78677E79284CEC0800DA0945 /* AudioVC.swift */; };
 		7879DB3D2820D6EF0017AC60 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB3C2820D6EF0017AC60 /* GoogleSignIn */; };
@@ -67,6 +69,8 @@
 		7826712C281FD962005FD952 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		7826712E281FDBF3005FD952 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7826713328201400005FD952 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
+		7829F001284F633000228B69 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		7829F003284F87AF00228B69 /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
 		78677E79284CEC0800DA0945 /* AudioVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVC.swift; sourceTree = "<group>"; };
 		7879DB50282157090017AC60 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 				78267103281EB335005FD952 /* Assets.xcassets */,
 				78D09E4228290A85004688AE /* ConversationTableViewCell.swift */,
 				789F3F61283B494B00EA5A7C /* NewConversationCell.swift */,
+				7829F003284F87AF00228B69 /* BindingTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				78267123281ED4A7005FD952 /* UIView+Extension.swift */,
 				78FF3199284D99E100BDA19C /* UIImage+Extension.swift */,
 				7896D57A2843820D0094A354 /* Notification+Extension.swift */,
+				7829F001284F633000228B69 /* String+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -346,6 +352,7 @@
 			files = (
 				7826711F281EBA6D005FD952 /* NewConversationVC.swift in Sources */,
 				7896D577284105170094A354 /* ProfileViewModel.swift in Sources */,
+				7829F004284F87AF00228B69 /* BindingTextField.swift in Sources */,
 				7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */,
 				7896D573284102F00094A354 /* ChatModels.swift in Sources */,
 				7896D56A2840B00A0094A354 /* LocationPickerVC.swift in Sources */,
@@ -360,6 +367,7 @@
 				78267117281EB9F7005FD952 /* LoginVC.swift in Sources */,
 				789F3F62283B494B00EA5A7C /* NewConversationCell.swift in Sources */,
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
+				7829F002284F633000228B69 /* String+Extension.swift in Sources */,
 				78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
 				78FF319C284F245100BDA19C /* BasicAudioController.swift in Sources */,

@@ -53,8 +53,8 @@ class RegisterVC: UIViewController {
         return field
     }()
     
-    private let emailField: UITextField = {
-        let field = UITextField()
+    private let emailField: BindingTextField = {
+        let field = BindingTextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
@@ -68,8 +68,17 @@ class RegisterVC: UIViewController {
         return field
     }()
     
-    private let passwordField: UITextField = {
-        let field = UITextField()
+    private let emailValidationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        return label
+    }()
+    
+    private let passwordField: BindingTextField = {
+        let field = BindingTextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .done
@@ -84,6 +93,40 @@ class RegisterVC: UIViewController {
         return field
     }()
     
+    private let passwordValidationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        return label
+    }()
+    
+    private let checkPasswordField: BindingTextField = {
+        let field = BindingTextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.returnKeyType = .done
+        field.layer.cornerRadius = 12
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.placeholder = "Password Again..."
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftViewMode = .always
+        field.backgroundColor = .secondarySystemBackground
+        field.isSecureTextEntry = true
+        return field
+    }()
+    
+    private let checkPasswordLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        return label
+    }()
+    
     private let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("Register", for: .normal)
@@ -94,6 +137,10 @@ class RegisterVC: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         return button
     }()
+    
+    private var correctEmail = false
+    private var correctPassword = false
+    private var samePassword = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +164,11 @@ class RegisterVC: UIViewController {
         scrollView.addSubview(firstNameField)
         scrollView.addSubview(lastNameField)
         scrollView.addSubview(emailField)
+        scrollView.addSubview(emailValidationLabel)
         scrollView.addSubview(passwordField)
+        scrollView.addSubview(passwordValidationLabel)
+        scrollView.addSubview(checkPasswordField)
+        scrollView.addSubview(checkPasswordLabel)
         scrollView.addSubview(registerButton)
         
         imageView.isUserInteractionEnabled = true
@@ -126,6 +177,8 @@ class RegisterVC: UIViewController {
         let gesture = UITapGestureRecognizer(target: self,
                                              action: #selector(didTapChangeProfilePic))
         imageView.addGestureRecognizer(gesture)
+        
+        setupTextField()
     }
     
     @objc func didTapChangeProfilePic() {
@@ -144,23 +197,39 @@ class RegisterVC: UIViewController {
         imageView.layer.cornerRadius = imageView.width/2.0
         
         firstNameField.frame = CGRect(x: 30,
-                                  y: imageView.bottom+10,
+                                  y: imageView.bottom+20,
                                   width: scrollView.width-60,
-                                  height: 52)
+                                  height: 35)
         lastNameField.frame = CGRect(x: 30,
-                                  y: firstNameField.bottom+10,
+                                  y: firstNameField.bottom+20,
                                   width: scrollView.width-60,
-                                  height: 52)
+                                  height: 35)
         emailField.frame = CGRect(x: 30,
-                                  y: lastNameField.bottom+10,
+                                  y: lastNameField.bottom+20,
                                   width: scrollView.width-60,
-                                  height: 52)
+                                  height: 35)
+        emailValidationLabel.frame = CGRect(x: 35,
+                                            y: emailField.bottom+3,
+                                            width: scrollView.width-60,
+                                            height: 14)
         passwordField.frame = CGRect(x: 30,
-                                     y: emailField.bottom+10,
+                                     y: emailValidationLabel.bottom+3,
                                      width: scrollView.width-60,
-                                     height: 52)
+                                     height: 35)
+        passwordValidationLabel.frame = CGRect(x: 35,
+                                               y: passwordField.bottom+3,
+                                               width: scrollView.width-60,
+                                               height: 14)
+        checkPasswordField.frame = CGRect(x: 30,
+                                          y: passwordValidationLabel.bottom+3,
+                                          width: scrollView.width-60,
+                                          height: 35)
+        checkPasswordLabel.frame = CGRect(x: 35,
+                                          y: checkPasswordField.bottom+3,
+                                          width: scrollView.width-60,
+                                          height: 14)
         registerButton.frame = CGRect(x: 30,
-                                   y: passwordField.bottom+10,
+                                   y: checkPasswordLabel.bottom+15,
                                    width: scrollView.width-60,
                                    height: 52)
     }
@@ -171,6 +240,13 @@ class RegisterVC: UIViewController {
         passwordField.resignFirstResponder()
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
+        
+        guard correctEmail == true,
+              correctPassword == true,
+              samePassword == true else {
+            print("can not register")
+            return
+        }
         
         guard let firstName = firstNameField.text,
               let lastName = lastNameField.text,
@@ -262,6 +338,56 @@ class RegisterVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    // MARK: Format Check
+    private func setupTextField() {
+        emailField.bind { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidEmail = text.emailValidation()
+            self?.emailValidationLabel.isHidden = false
+            if isValidEmail {
+                self?.emailValidationLabel.text = ""
+                strongSelf.correctEmail = true
+            }
+            else {
+                self?.emailValidationLabel.text = "Email is not valid!"
+                strongSelf.correctEmail = false
+            }
+            
+        }
+        passwordField.bind { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidPassword = text.passwordValidation()
+            self?.passwordValidationLabel.isHidden = false
+            if isValidPassword {
+                self?.passwordValidationLabel.text = ""
+                strongSelf.correctPassword = true
+            }
+            else {
+                self?.passwordValidationLabel.text = "At least 8 characters and 1 digit!"
+                strongSelf.correctPassword = false
+            }
+            
+        }
+        checkPasswordField.bind { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            self?.checkPasswordLabel.isHidden = false
+            if(self?.passwordField.text != self?.checkPasswordField.text) {
+                self?.checkPasswordLabel.text =  "Password is not the same!"
+                strongSelf.samePassword = false
+            }
+            else {
+                self?.checkPasswordLabel.text =  ""
+                strongSelf.samePassword = true
+            }
+        }
+    }
+    
     
 }
 
@@ -334,3 +460,6 @@ extension RegisterVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         picker.dismiss(animated: true, completion: nil)
     }
 }
+
+
+
