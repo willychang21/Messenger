@@ -5,6 +5,7 @@ import GoogleSignIn
 import JGProgressHUD
 import AuthenticationServices
 import CryptoKit
+import SwiftUI
 //import RealmSwift
 
 final class LoginVC: UIViewController {
@@ -77,6 +78,26 @@ final class LoginVC: UIViewController {
         return button
     }()
     
+    private let donNotHaveaAccountLabel: UILabel = {
+       let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.textAlignment = .center
+        label.textColor = UIColor.label
+        label.text = "Don't have an account?"
+        return label
+    }()
+    
+    private let signupButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Sign Up", for: .normal)
+        button.backgroundColor = .link
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        return button
+    }()
+    
     private let facebookLoginButton: FBLoginButton = {
         let button = FBLoginButton()
         button.permissions = ["email", "public_profile"]
@@ -85,11 +106,12 @@ final class LoginVC: UIViewController {
     
     private let googleLoginButton: GIDSignInButton = {
         let button = GIDSignInButton()
+        button.style = GIDSignInButtonStyle.wide
         return button
     }()
     
     private let appleLoginButton: ASAuthorizationAppleIDButton = {
-        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default,
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp,
                                                   authorizationButtonStyle: .whiteOutline)
         return button
     }()
@@ -123,13 +145,9 @@ final class LoginVC: UIViewController {
 //            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
 //        }
         
-        title = "Login"
+//        title = "Login"
         view.backgroundColor = .systemBackground // introduce in iOS 13 (semantic color palette
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(didTapRegister))
         loginButton.addTarget(self,
                               action: #selector(loginButtonTapped),
                               for: .touchUpInside)
@@ -141,6 +159,9 @@ final class LoginVC: UIViewController {
         appleLoginButton.addTarget(self,
                                    action: #selector(appleButtonTapped),
                                    for: .touchUpInside)
+        signupButton.addTarget(self,
+                               action: #selector(didTapRegister),
+                               for: .touchUpInside)
         
         
         emailField.delegate = self
@@ -154,6 +175,8 @@ final class LoginVC: UIViewController {
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
+        scrollView.addSubview(donNotHaveaAccountLabel)
+        scrollView.addSubview(signupButton)
         scrollView.addSubview(facebookLoginButton)
         scrollView.addSubview(googleLoginButton)
         scrollView.addSubview(appleLoginButton)
@@ -170,33 +193,41 @@ final class LoginVC: UIViewController {
         scrollView.frame = view.bounds
         let size = scrollView.width/3
         imageView.frame = CGRect(x: (scrollView.width-size*1.5)/2,
-                                 y: 20,
+                                 y: 0,
                                  width: size*1.5,
                                  height: size*1.5)
         emailField.frame = CGRect(x: 30,
-                                  y: imageView.bottom+10,
+                                  y: imageView.bottom+5,
                                   width: scrollView.width-60,
-                                  height: 52)
+                                  height: 35)
         passwordField.frame = CGRect(x: 30,
                                      y: emailField.bottom+10,
                                      width: scrollView.width-60,
-                                     height: 52)
+                                     height: 35)
         loginButton.frame = CGRect(x: 30,
                                    y: passwordField.bottom+10,
                                    width: scrollView.width-60,
-                                   height: 52)
+                                   height: 35)
+        donNotHaveaAccountLabel.frame = CGRect(x: 30,
+                                               y: loginButton.bottom+30,
+                                               width: scrollView.width-60,
+                                               height: 15)
+        signupButton.frame = CGRect(x: 30,
+                                    y: donNotHaveaAccountLabel.bottom+20,
+                                    width: scrollView.width-60,
+                                    height: 35)
         facebookLoginButton.frame = CGRect(x: 30,
-                                           y: loginButton.bottom+30,
+                                           y: signupButton.bottom+10,
                                            width: scrollView.width-60,
-                                           height: 52)
-        googleLoginButton.frame = CGRect(x: 30,
+                                           height: 35)
+        googleLoginButton.frame = CGRect(x: 27,
                                          y: facebookLoginButton.bottom+10,
-                                         width: scrollView.width-60,
-                                         height: 52)
+                                         width: scrollView.width-55,
+                                         height: 35)
         appleLoginButton.frame = CGRect(x: 30,
                                         y: googleLoginButton.bottom+10,
                                         width: scrollView.width-60,
-                                        height: 52)
+                                        height: 35)
     }
     
     // MARK: Firebase Log in

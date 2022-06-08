@@ -8,6 +8,7 @@ class AudioVC: UIViewController {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Record Audio"
+        label.textColor = UIColor.label
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
@@ -16,7 +17,7 @@ class AudioVC: UIViewController {
         let label = UILabel()
         label.text = "Press the button to record audio."
         label.font = .systemFont(ofSize: 16)
-        label.textColor = .darkGray
+        label.textColor = UIColor.label
         label.numberOfLines = 0
         return label
     }()
@@ -352,7 +353,13 @@ class AudioVC: UIViewController {
     }
     
     @objc func stop(sender: UIButton) {
-        recordButton.setImage(UIImage(named: "Record"), for: UIControl.State.normal)
+        guard let record = UIImage(named: "Record") else {
+            return
+        }
+        guard let resizeRecord = record.resizedImage(Size: CGSize(width: 50, height: 50)) else {
+            return
+        }
+        recordButton.setImage(resizeRecord, for: UIControl.State.normal)
         recordButton.isEnabled = true
         stopButton.isEnabled = false
         playButton.isEnabled = true
@@ -387,7 +394,13 @@ class AudioVC: UIViewController {
                 startTimer()
                 
                 // Change to the Pause image
-                recordButton.setImage(UIImage(named: "Pause"), for: UIControl.State.normal)
+                guard let pause = UIImage(named: "Pause") else {
+                    return
+                }
+                guard let resizePause = pause.resizedImage(Size: CGSize(width: 50, height: 50)) else {
+                    return
+                }
+                recordButton.setImage(resizePause, for: UIControl.State.normal)
             } catch {
                 print(error)
             }
@@ -398,7 +411,13 @@ class AudioVC: UIViewController {
             pauseTimer()
             
             // Change to the Record image
-            recordButton.setImage(UIImage(named: "Record"), for: UIControl.State.normal)
+            guard let record = UIImage(named: "Record") else {
+                return
+            }
+            guard let resizeRecord = record.resizedImage(Size: CGSize(width: 50, height: 50)) else {
+                return
+            }
+            recordButton.setImage(resizeRecord, for: UIControl.State.normal)
         }
         
         stopButton.isEnabled = true

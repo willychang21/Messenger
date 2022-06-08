@@ -405,6 +405,17 @@ final class ChatVC: MessagesViewController {
         self.tabBarController?.tabBar.isHidden = true
         self.present(vc, animated: false)
     }
+    
+    // MARK: - Helpers
+    
+    func isTimeLabelVisible(at indexPath: IndexPath) -> Bool {
+        return indexPath.section % 3 == 0 && !isPreviousMessageSameSender(at: indexPath)
+    }
+    
+    func isPreviousMessageSameSender(at indexPath: IndexPath) -> Bool {
+        guard indexPath.section - 1 >= 0 else { return false }
+        return messages[indexPath.section].sender.senderId == messages[indexPath.section - 1].sender.senderId
+    }
 
 }
 // MARK: Image & Video Input
@@ -705,7 +716,7 @@ extension ChatVC: InputBarAccessoryViewDelegate {
 }
 
 // MARK: Chat Cell Data
-extension ChatVC: MessagesDataSource, MessagesLayoutDelegate,MessagesDisplayDelegate {
+extension ChatVC: MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
     
     func currentSender() -> SenderType {
         if let sender = selfSender {
@@ -805,6 +816,21 @@ extension ChatVC: MessagesDataSource, MessagesLayoutDelegate,MessagesDisplayDele
                 }
             }
         }
+    }
+    
+    // Cell Top Label
+    func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        return 10
+    }
+    func didTapCellTopLabel(in cell: MessageCollectionViewCell) {
+        print("Top cell label tapped")
+    }
+    
+    func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        if isTimeLabelVisible(at: indexPath) {
+            return NSAttributedString(string: MessageKitDateFormatter.shared.string(from: message.sentDate), attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        }
+        return nil
     }
 }
 // MARK: Tap Chat Cell

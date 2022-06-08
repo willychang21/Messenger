@@ -3,6 +3,7 @@ import FirebaseAuth
 import FacebookLogin
 import GoogleSignIn
 import SDWebImage
+import MessageUI
 
 final class ProfileVC: UIViewController {
     
@@ -124,6 +125,11 @@ final class ProfileVC: UIViewController {
         data.append(ProfileViewModel(viewModelType: .info,
                                      title: "Email : \(email)",
                                      handler: nil))
+        data.append(ProfileViewModel(viewModelType: .sendMail,
+                                     title: "Send Mail to Developer",
+                                     handler: { [weak self] in
+            
+        }))
     }
     
     func logOut() {
