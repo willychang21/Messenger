@@ -2,15 +2,10 @@
 A beginners swift project to create a real time chat application in Swift 5 using Firebase.
 
 ## IDM Version
-<img alt="GitHub repo size" src="https://img.shields.io/badge/Xcode-Version%2013.3%20(13E113)-blue">
+<img alt="GitHub repo size" src="https://img.shields.io/badge/Xcode-Version%2013.4.1%20(13F100)-blue">
 
 ## Swift Package Manager
-<img alt="GitHub repo size" src="https://img.shields.io/badge/Firebase-8.15.0-orange">
-<img alt="GitHub repo size" src="https://img.shields.io/badge/GoogleSignIn-6.1.0-orange">
-<img alt="GitHub repo size" src="https://img.shields.io/badge/Facebook-13.2.0-blue">
-<img alt="GitHub repo size" src="https://img.shields.io/badge/MessageKit-3.8.0-green">
-<img alt="GitHub repo size" src="https://img.shields.io/badge/SDWebImage-5.12.0-red">
-<img alt="GitHub repo size" src="https://img.shields.io/badge/JGProgressHUB-2.2.0-yellow">
+![](https://img.shields.io/badge/Firebase-8.15.0-orange) ![](https://img.shields.io/badge/GoogleSignIn-6.1.0-orange) ![](https://img.shields.io/badge/Facebook-13.2.0-blue) ![](https://img.shields.io/badge/MessageKit-3.8.0-green) ![](https://img.shields.io/badge/SDWebImage-5.12.0-red) ![](https://img.shields.io/badge/JGProgressHUB-2.2.0-yellow")
 
 ## Features
 * Sign up / Sign in
@@ -29,8 +24,14 @@ A beginners swift project to create a real time chat application in Swift 5 usin
 * Search for Users
 * Deleting Conversations
 * User Profile
+    * User Name
+    * Support
+        * App Info
+        * Privacy Policy
+        * Email Contact
 * Dark Mode Support
 * FCM Push Notificaiton
 ## Future
 * Group Chat
+* Friendship
 
