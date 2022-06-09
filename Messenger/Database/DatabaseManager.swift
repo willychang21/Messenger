@@ -711,11 +711,21 @@ extension DatabaseManager {
                             
                             var databaseEntryConversations = [[String: Any]]()
                             
-                            let updatedValue: [String: Any] = [
-                                "date": dateString,
-                                "is_read": false,
-                                "message": message
-                            ]
+                            let updatedValue: [String: Any]
+                            if newMessageEntry["type"] as? String == "text" {
+                                updatedValue = [
+                                    "date": dateString,
+                                    "is_read": false,
+                                    "message": message
+                                ]
+                            }
+                            else {
+                                updatedValue = [
+                                    "date": dateString,
+                                    "is_read": false,
+                                    "message": nonTextMessage
+                                ]
+                            }
                             
                             guard let currentName = UserDefaults.standard.value(forKey: "name") as? String else{
                                 return

@@ -37,6 +37,9 @@
 		7879DB54282172870017AC60 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB53282172870017AC60 /* FirebaseDatabase */; };
 		7879DB57282172CA0017AC60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7879DB56282172CA0017AC60 /* FirebaseStorage */; };
 		7879DB59282175330017AC60 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879DB58282175330017AC60 /* StorageManager.swift */; };
+		787FCDB42851DE8B002CE6B8 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDB32851DE8B002CE6B8 /* ProfileTableViewCell.swift */; };
+		787FCDB62851FBCB002CE6B8 /* AppInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */; };
+		787FCDBA28525270002CE6B8 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787FCDB928525270002CE6B8 /* Onboarding.storyboard */; };
 		7896D56A2840B00A0094A354 /* LocationPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7896D5692840B00A0094A354 /* LocationPickerVC.swift */; };
 		7896D56D2840D1B70094A354 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7896D56C2840D1B70094A354 /* FirebaseCrashlytics */; };
 		7896D5712840D3AA0094A354 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7896D5702840D3AA0094A354 /* FirebaseAnalytics */; };
@@ -74,6 +77,9 @@
 		78677E79284CEC0800DA0945 /* AudioVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVC.swift; sourceTree = "<group>"; };
 		7879DB50282157090017AC60 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7879DB58282175330017AC60 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		787FCDB32851DE8B002CE6B8 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoVC.swift; sourceTree = "<group>"; };
+		787FCDB928525270002CE6B8 /* Onboarding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		7896D5692840B00A0094A354 /* LocationPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerVC.swift; sourceTree = "<group>"; };
 		7896D572284102F00094A354 /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		7896D574284104BC0094A354 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -169,6 +175,7 @@
 				78267103281EB335005FD952 /* Assets.xcassets */,
 				78D09E4228290A85004688AE /* ConversationTableViewCell.swift */,
 				789F3F61283B494B00EA5A7C /* NewConversationCell.swift */,
+				787FCDB32851DE8B002CE6B8 /* ProfileTableViewCell.swift */,
 				7829F003284F87AF00228B69 /* BindingTextField.swift */,
 			);
 			path = Views;
@@ -184,6 +191,7 @@
 				7896D5692840B00A0094A354 /* LocationPickerVC.swift */,
 				78677E79284CEC0800DA0945 /* AudioVC.swift */,
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
+				787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */,
 				78FF319B284F245100BDA19C /* BasicAudioController.swift */,
 				78267122281ED093005FD952 /* Login */,
 			);
@@ -195,6 +203,7 @@
 			children = (
 				78267100281EB335005FD952 /* Main.storyboard */,
 				78267105281EB335005FD952 /* LaunchScreen.storyboard */,
+				787FCDB928525270002CE6B8 /* Onboarding.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -317,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78267107281EB335005FD952 /* LaunchScreen.storyboard in Resources */,
+				787FCDBA28525270002CE6B8 /* Onboarding.storyboard in Resources */,
 				7826712F281FDBF3005FD952 /* GoogleService-Info.plist in Resources */,
 				78267104281EB335005FD952 /* Assets.xcassets in Resources */,
 				78267102281EB335005FD952 /* Main.storyboard in Resources */,
@@ -352,6 +362,7 @@
 			files = (
 				7826711F281EBA6D005FD952 /* NewConversationVC.swift in Sources */,
 				7896D577284105170094A354 /* ProfileViewModel.swift in Sources */,
+				787FCDB62851FBCB002CE6B8 /* AppInfoVC.swift in Sources */,
 				7829F004284F87AF00228B69 /* BindingTextField.swift in Sources */,
 				7826712D281FD962005FD952 /* DatabaseManager.swift in Sources */,
 				7896D573284102F00094A354 /* ChatModels.swift in Sources */,
@@ -373,6 +384,7 @@
 				78FF319C284F245100BDA19C /* BasicAudioController.swift in Sources */,
 				78267119281EBA07005FD952 /* RegisterVC.swift in Sources */,
 				789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */,
+				787FCDB42851DE8B002CE6B8 /* ProfileTableViewCell.swift in Sources */,
 				7896D57B2843820D0094A354 /* Notification+Extension.swift in Sources */,
 				7879DB59282175330017AC60 /* StorageManager.swift in Sources */,
 			);

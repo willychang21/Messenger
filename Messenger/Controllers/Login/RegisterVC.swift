@@ -144,19 +144,14 @@ class RegisterVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Login"
+        title = "Create an account"
         view.backgroundColor = .systemBackground
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(didTapRegister))
-        registerButton.addTarget(self,
-                              action: #selector(registerButtonTapped),
-                              for: .touchUpInside)
-        
+        firstNameField.delegate = self
+        lastNameField.delegate = self
         emailField.delegate = self
         passwordField.delegate = self
+        checkPasswordField.delegate = self
         
         // Add subviews
         view.addSubview(scrollView)
@@ -178,12 +173,28 @@ class RegisterVC: UIViewController {
                                              action: #selector(didTapChangeProfilePic))
         imageView.addGestureRecognizer(gesture)
         
+        registerButton.addTarget(self,
+                              action: #selector(registerButtonTapped),
+                              for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tap) // Add gesture recognizer to background view
+        
         setupTextField()
     }
     
     @objc func didTapChangeProfilePic() {
         print("Change pic called")
         presentPhotoActionSheet()
+    }
+    
+    // Dismiss Keyboard When Clicking On Background
+    @objc func handleTap() {
+        firstNameField.resignFirstResponder()
+        lastNameField.resignFirstResponder()
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+        checkPasswordField.resignFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
@@ -236,10 +247,11 @@ class RegisterVC: UIViewController {
     
     @objc private func registerButtonTapped() {
         
-        emailField.resignFirstResponder()
-        passwordField.resignFirstResponder()
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+        checkPasswordField.resignFirstResponder()
         
         guard correctEmail == true,
               correctPassword == true,
@@ -286,8 +298,8 @@ class RegisterVC: UIViewController {
             }
             
             // set UserDefaults
-            UserDefaults.standard.setValue(email, forKey: "name")
-            UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "email")
+            UserDefaults.standard.setValue(email, forKey: "email")
+            UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
             
             guard authResult != nil, error == nil else {
                 print("Error creating user")
@@ -330,12 +342,6 @@ class RegisterVC: UIViewController {
                                       style: .cancel,
                                       handler:  nil))
         present(alert, animated: true)
-    }
-    
-    @objc private func didTapRegister() {
-        let vc = RegisterVC()
-        vc.title = "Create Account"
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: Format Check
@@ -398,8 +404,8 @@ extension RegisterVC: UITextFieldDelegate {
         if textField == emailField {
             passwordField.becomeFirstResponder()
         }
-        else if textField == passwordField {
-            registerButtonTapped()
+        else if textField == checkPasswordField {
+            view.endEditing(true)
         }
         
         return true

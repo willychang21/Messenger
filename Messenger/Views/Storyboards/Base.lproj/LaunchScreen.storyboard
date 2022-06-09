@@ -16,20 +16,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="l42-kk-iyv">
-                                <rect key="frame" x="97" y="338" width="220" height="220"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="TVL-xq-Suc">
+                                <rect key="frame" x="57" y="298" width="300" height="300"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="220" id="6xv-ZB-qRx"/>
-                                    <constraint firstAttribute="height" constant="220" id="k37-4A-UUh"/>
+                                    <constraint firstAttribute="width" constant="300" id="K5c-vv-SzV"/>
+                                    <constraint firstAttribute="height" constant="300" id="oG3-gg-VEz"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="l42-kk-iyv" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fTD-Uf-U3H"/>
-                            <constraint firstItem="l42-kk-iyv" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="wJo-hS-E6p"/>
+                            <constraint firstItem="TVL-xq-Suc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4QG-O7-Zn4"/>
+                            <constraint firstItem="TVL-xq-Suc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="gnu-XQ-wAU"/>
                         </constraints>
                     </view>
                 </viewController>
