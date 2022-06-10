@@ -23,7 +23,7 @@ class AppInfoVC: UIViewController {
     
     private let content: UITextView = {
         let textView = UITextView()
-        textView.text = "ChatNow offers the fastest way to chat, providing not only text messages, image messages, video messages, audio messages and location messages. What's more, the chat content never disappears because it is backed up in the cloud."
+        textView.text = "Chaaat offers the fastest way to chat, providing not only text messages, image messages, video messages, audio messages and location messages. What's more, the chat content never disappears because we backed up all your messages in the cloud."
         textView.textColor = .label
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .light)

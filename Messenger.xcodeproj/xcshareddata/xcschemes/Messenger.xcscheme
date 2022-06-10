@@ -80,6 +80,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Chaaat"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

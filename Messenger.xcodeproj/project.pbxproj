@@ -40,6 +40,9 @@
 		787FCDB42851DE8B002CE6B8 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDB32851DE8B002CE6B8 /* ProfileTableViewCell.swift */; };
 		787FCDB62851FBCB002CE6B8 /* AppInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */; };
 		787FCDBA28525270002CE6B8 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787FCDB928525270002CE6B8 /* Onboarding.storyboard */; };
+		787FCDBC28530BD8002CE6B8 /* WalkthroughContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDBB28530BD8002CE6B8 /* WalkthroughContentVC.swift */; };
+		787FCDBE28530C1D002CE6B8 /* WalkthroughPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDBD28530C1D002CE6B8 /* WalkthroughPageVC.swift */; };
+		787FCDC028530C45002CE6B8 /* WalkthroughVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787FCDBF28530C45002CE6B8 /* WalkthroughVC.swift */; };
 		7896D56A2840B00A0094A354 /* LocationPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7896D5692840B00A0094A354 /* LocationPickerVC.swift */; };
 		7896D56D2840D1B70094A354 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7896D56C2840D1B70094A354 /* FirebaseCrashlytics */; };
 		7896D5712840D3AA0094A354 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7896D5702840D3AA0094A354 /* FirebaseAnalytics */; };
@@ -80,6 +83,9 @@
 		787FCDB32851DE8B002CE6B8 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoVC.swift; sourceTree = "<group>"; };
 		787FCDB928525270002CE6B8 /* Onboarding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
+		787FCDBB28530BD8002CE6B8 /* WalkthroughContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughContentVC.swift; sourceTree = "<group>"; };
+		787FCDBD28530C1D002CE6B8 /* WalkthroughPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughPageVC.swift; sourceTree = "<group>"; };
+		787FCDBF28530C45002CE6B8 /* WalkthroughVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughVC.swift; sourceTree = "<group>"; };
 		7896D5692840B00A0094A354 /* LocationPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerVC.swift; sourceTree = "<group>"; };
 		7896D572284102F00094A354 /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		7896D574284104BC0094A354 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -184,6 +190,7 @@
 		78267112281EB839005FD952 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				78267122281ED093005FD952 /* Login */,
 				78267114281EB8F1005FD952 /* ConversationsVC.swift */,
 				7879DB50282157090017AC60 /* ChatVC.swift */,
 				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
@@ -193,7 +200,9 @@
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
 				787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */,
 				78FF319B284F245100BDA19C /* BasicAudioController.swift */,
-				78267122281ED093005FD952 /* Login */,
+				787FCDBB28530BD8002CE6B8 /* WalkthroughContentVC.swift */,
+				787FCDBD28530C1D002CE6B8 /* WalkthroughPageVC.swift */,
+				787FCDBF28530C45002CE6B8 /* WalkthroughVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -369,6 +378,7 @@
 				7896D56A2840B00A0094A354 /* LocationPickerVC.swift in Sources */,
 				782670FB281EB335005FD952 /* AppDelegate.swift in Sources */,
 				78267121281EBA91005FD952 /* ProfileVC.swift in Sources */,
+				787FCDC028530C45002CE6B8 /* WalkthroughVC.swift in Sources */,
 				782670FD281EB335005FD952 /* SceneDelegate.swift in Sources */,
 				78267124281ED4A7005FD952 /* UIView+Extension.swift in Sources */,
 				78FF319A284D99E200BDA19C /* UIImage+Extension.swift in Sources */,
@@ -379,12 +389,14 @@
 				789F3F62283B494B00EA5A7C /* NewConversationCell.swift in Sources */,
 				7826711B281EBA28005FD952 /* PhotoViewerVC.swift in Sources */,
 				7829F002284F633000228B69 /* String+Extension.swift in Sources */,
+				787FCDBE28530C1D002CE6B8 /* WalkthroughPageVC.swift in Sources */,
 				78D09E4328290A85004688AE /* ConversationTableViewCell.swift in Sources */,
 				78267115281EB8F1005FD952 /* ConversationsVC.swift in Sources */,
 				78FF319C284F245100BDA19C /* BasicAudioController.swift in Sources */,
 				78267119281EBA07005FD952 /* RegisterVC.swift in Sources */,
 				789F3F602835006D00EA5A7C /* ConversationsModels.swift in Sources */,
 				787FCDB42851DE8B002CE6B8 /* ProfileTableViewCell.swift in Sources */,
+				787FCDBC28530BD8002CE6B8 /* WalkthroughContentVC.swift in Sources */,
 				7896D57B2843820D0094A354 /* Notification+Extension.swift in Sources */,
 				7879DB59282175330017AC60 /* StorageManager.swift in Sources */,
 			);
@@ -538,6 +550,7 @@
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Messenger/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Chaaat;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to  taka a profile picture";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please allow access to send audio and video messages.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo for your profile.";
@@ -558,7 +571,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -574,6 +587,7 @@
 				DEVELOPMENT_TEAM = 2B5A97LZH4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Messenger/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Chaaat;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to  taka a profile picture";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please allow access to send audio and video messages.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo for your profile.";
@@ -594,7 +608,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

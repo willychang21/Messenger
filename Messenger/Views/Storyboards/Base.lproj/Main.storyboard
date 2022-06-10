@@ -117,7 +117,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ChatNow" largeTitleDisplayMode="never" id="Hag-5d-m3p"/>
+                    <navigationItem key="navigationItem" title="Chaaat" largeTitleDisplayMode="never" id="Hag-5d-m3p"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

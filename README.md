@@ -1,7 +1,7 @@
 # Messenger Real Time Chat App
 A beginners swift project to create a real time chat application in Swift 5 using Firebase.
 
-## IDM Version
+## Xcode Version
 <img alt="GitHub repo size" src="https://img.shields.io/badge/Xcode-Version%2013.4.1%20(13F100)-blue">
 
 ## Swift Package Manager
@@ -34,4 +34,7 @@ A beginners swift project to create a real time chat application in Swift 5 usin
 ## Future
 * Group Chat
 * Friendship
+* QRcode add friend
+* UserID add friend
+* unread/isread message
 

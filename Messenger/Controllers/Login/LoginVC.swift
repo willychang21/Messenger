@@ -116,8 +116,6 @@ final class LoginVC: UIViewController {
         return button
     }()
     
-//    private var loginObserver: NSObjectProtocol?
-    
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
       let nonce = randomNonceString()
@@ -135,18 +133,24 @@ final class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Chaaat"
+        view.backgroundColor = .systemBackground // introduce in iOS 13 (semantic color palette)
         
-//        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification,
-//                                                               object: nil,
-//                                                               queue: .main) { [weak self] _ in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-//        }
+        emailField.delegate = self
+        passwordField.delegate = self
+        facebookLoginButton.delegate = self
         
-//        title = "Login"
-        view.backgroundColor = .systemBackground // introduce in iOS 13 (semantic color palette
+        // Add subviews
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(emailField)
+        scrollView.addSubview(passwordField)
+        scrollView.addSubview(loginButton)
+        scrollView.addSubview(donNotHaveaAccountLabel)
+        scrollView.addSubview(signupButton)
+        scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleLoginButton)
+        scrollView.addSubview(appleLoginButton)
         
         loginButton.addTarget(self,
                               action: #selector(loginButtonTapped),
@@ -164,29 +168,11 @@ final class LoginVC: UIViewController {
                                for: .touchUpInside)
         
         
-        emailField.delegate = self
-        passwordField.delegate = self
+       
         
-        facebookLoginButton.delegate = self
         
-        // Add subviews
-        view.addSubview(scrollView)
-        scrollView.addSubview(imageView)
-        scrollView.addSubview(emailField)
-        scrollView.addSubview(passwordField)
-        scrollView.addSubview(loginButton)
-        scrollView.addSubview(donNotHaveaAccountLabel)
-        scrollView.addSubview(signupButton)
-        scrollView.addSubview(facebookLoginButton)
-        scrollView.addSubview(googleLoginButton)
-        scrollView.addSubview(appleLoginButton)
+
     }
-    
-//    deinit {
-//        if let observer = loginObserver {
-//            NotificationCenter.default.removeObserver(observer)
-//        }
-//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -201,15 +187,15 @@ final class LoginVC: UIViewController {
                                   width: scrollView.width-60,
                                   height: 35)
         passwordField.frame = CGRect(x: 30,
-                                     y: emailField.bottom+10,
+                                     y: emailField.bottom+15,
                                      width: scrollView.width-60,
                                      height: 35)
         loginButton.frame = CGRect(x: 30,
-                                   y: passwordField.bottom+10,
+                                   y: passwordField.bottom+15,
                                    width: scrollView.width-60,
                                    height: 35)
         donNotHaveaAccountLabel.frame = CGRect(x: 30,
-                                               y: loginButton.bottom+30,
+                                               y: loginButton.bottom+70,
                                                width: scrollView.width-60,
                                                height: 15)
         signupButton.frame = CGRect(x: 30,
@@ -217,17 +203,31 @@ final class LoginVC: UIViewController {
                                     width: scrollView.width-60,
                                     height: 35)
         facebookLoginButton.frame = CGRect(x: 30,
-                                           y: signupButton.bottom+10,
+                                           y: signupButton.bottom+15,
                                            width: scrollView.width-60,
                                            height: 35)
         googleLoginButton.frame = CGRect(x: 27,
-                                         y: facebookLoginButton.bottom+10,
+                                         y: facebookLoginButton.bottom+15,
                                          width: scrollView.width-55,
                                          height: 35)
         appleLoginButton.frame = CGRect(x: 30,
-                                        y: googleLoginButton.bottom+10,
+                                        y: googleLoginButton.bottom+15,
                                         width: scrollView.width-60,
                                         height: 35)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if UserDefaults.standard.bool(forKey: "hasViewedWalkthrough") {
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "Onboarding", bundle: nil)
+        if let walkingthroughVC = storyboard.instantiateViewController(withIdentifier: "WalkthroughVC") as? WalkthroughVC {
+            
+            present(walkingthroughVC, animated: true, completion: nil)
+        }
+        
     }
     
     // MARK: Firebase Log in
