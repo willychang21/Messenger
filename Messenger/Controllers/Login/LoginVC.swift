@@ -166,11 +166,6 @@ final class LoginVC: UIViewController {
         signupButton.addTarget(self,
                                action: #selector(didTapRegister),
                                for: .touchUpInside)
-        
-        
-       
-        
-        
 
     }
     
@@ -178,42 +173,88 @@ final class LoginVC: UIViewController {
         super.viewDidLayoutSubviews()
         scrollView.frame = view.bounds
         let size = scrollView.width/3
+        let width = scrollView.width-100
+        let height = CGFloat(35)
+        let positionX = view.center.x-(width/2)
+        
         imageView.frame = CGRect(x: (scrollView.width-size*1.5)/2,
                                  y: 0,
                                  width: size*1.5,
                                  height: size*1.5)
-        emailField.frame = CGRect(x: 30,
+        emailField.frame = CGRect(x: positionX,
                                   y: imageView.bottom+5,
-                                  width: scrollView.width-60,
-                                  height: 35)
-        passwordField.frame = CGRect(x: 30,
+                                  width: width,
+                                  height: height)
+        passwordField.frame = CGRect(x: positionX,
                                      y: emailField.bottom+15,
-                                     width: scrollView.width-60,
-                                     height: 35)
-        loginButton.frame = CGRect(x: 30,
+                                     width: width,
+                                     height: height)
+        loginButton.frame = CGRect(x: positionX,
                                    y: passwordField.bottom+15,
-                                   width: scrollView.width-60,
-                                   height: 35)
-        donNotHaveaAccountLabel.frame = CGRect(x: 30,
-                                               y: loginButton.bottom+70,
-                                               width: scrollView.width-60,
-                                               height: 15)
-        signupButton.frame = CGRect(x: 30,
-                                    y: donNotHaveaAccountLabel.bottom+20,
-                                    width: scrollView.width-60,
-                                    height: 35)
-        facebookLoginButton.frame = CGRect(x: 30,
-                                           y: signupButton.bottom+15,
-                                           width: scrollView.width-60,
-                                           height: 35)
-        googleLoginButton.frame = CGRect(x: 27,
-                                         y: facebookLoginButton.bottom+15,
-                                         width: scrollView.width-55,
-                                         height: 35)
-        appleLoginButton.frame = CGRect(x: 30,
-                                        y: googleLoginButton.bottom+15,
-                                        width: scrollView.width-60,
-                                        height: 35)
+                                   width: width,
+                                   height: height)
+    
+    
+        donNotHaveaAccountLabel.translatesAutoresizingMaskIntoConstraints = false
+        var noALabelConstraints = [NSLayoutConstraint]()
+        noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .centerX, relatedBy: .equal,
+                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+        noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: signupButton, attribute: .top, multiplier: 1.0, constant: -15))
+        noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .width, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+        noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+        NSLayoutConstraint.activate(noALabelConstraints)    // these constraints must activate than will work
+
+        signupButton.translatesAutoresizingMaskIntoConstraints = false
+        var signupBtnConstraints = [NSLayoutConstraint]()
+        signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .centerX, relatedBy: .equal,
+                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+        signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: facebookLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
+        signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .width, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+        signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+        NSLayoutConstraint.activate(signupBtnConstraints)    // these constraints must activate than will work
+        
+        facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        var facebookBtnConstraints = [NSLayoutConstraint]()
+        facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal,
+                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+        facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: googleLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
+        facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+        facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+        NSLayoutConstraint.activate(facebookBtnConstraints)    // these constraints must activate than will work
+        
+        googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        var googleBtnConstraints = [NSLayoutConstraint]()
+        googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .centerX, relatedBy: .equal,
+                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+        googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: appleLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
+        googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .width, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+        googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+        NSLayoutConstraint.activate(googleBtnConstraints)    // these constraints must activate than will work
+        
+        appleLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        var appleBtnConstraints = [NSLayoutConstraint]()
+        appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .centerX, relatedBy: .equal,
+                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+        appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .bottom, relatedBy: .equal,
+                                              toItem: view, attribute: .bottom, multiplier: 1.0, constant: -30))
+        appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .width, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+        appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+        NSLayoutConstraint.activate(appleBtnConstraints)    // these constraints must activate than will work
+
     }
     
     override func viewDidAppear(_ animated: Bool) {

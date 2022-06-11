@@ -1,5 +1,9 @@
-# Messenger Real Time Chat App
+# Messenger Real Time Chat App (Chaaat)
 A beginners swift project to create a real time chat application in Swift 5 using Firebase.
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/38349902/173114794-b198d708-cbc6-4aa7-92d9-dc8aa6281395.png" alt="chatnowlogo" width="200"/>
+</p>
 
 ## Xcode Version
 <img alt="GitHub repo size" src="https://img.shields.io/badge/Xcode-Version%2013.4.1%20(13F100)-blue">
