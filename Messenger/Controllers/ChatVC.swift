@@ -26,6 +26,7 @@ final class ChatVC: MessagesViewController {
     private var messages = [Message]()
     
     var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer?
     private var audioVCObserver: NSObjectProtocol?
     lazy var audioController = BasicAudioController(messageCollectionView: messagesCollectionView)
     
@@ -45,8 +46,8 @@ final class ChatVC: MessagesViewController {
         // we could get rid of some of self.
         // because of name collide, but it's just better pratice to leave them,
         // just signal it's a constructor.
-        self.conversationId = id
         self.otherUserEmail = email
+        self.conversationId = id
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,7 +78,6 @@ final class ChatVC: MessagesViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        messageInputBar.inputTextView.becomeFirstResponder()
         if let conversationId = conversationId {
             listenForMessages(id: conversationId, shouldScrollToBottom: true)
         }
@@ -748,6 +748,24 @@ extension ChatVC: MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDel
             break
         }
         
+    }
+    
+    func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
+        guard let message = message as? Message else {
+            return
+        }
+        
+        switch message.kind {
+        case .audio(let audio):
+            let audioUrl = audio.url
+            guard let player = try? AVAudioPlayer(contentsOf: audioUrl) else {
+                print("Failed to initialize AVAudioPlayer")
+                return
+            }
+            player.delegate = self
+        default:
+            break
+        }
     }
     
     // Change Message Color

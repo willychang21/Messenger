@@ -79,7 +79,7 @@ final class LoginVC: UIViewController {
     }()
     
     private let donNotHaveaAccountLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textAlignment = .center
         label.textColor = UIColor.label
@@ -107,6 +107,7 @@ final class LoginVC: UIViewController {
     private let googleLoginButton: GIDSignInButton = {
         let button = GIDSignInButton()
         button.style = GIDSignInButtonStyle.wide
+        button.colorScheme = GIDSignInButtonColorScheme.dark
         return button
     }()
     
@@ -116,20 +117,20 @@ final class LoginVC: UIViewController {
         return button
     }()
     
-    @available(iOS 13, *)
-    func startSignInWithAppleFlow() {
-      let nonce = randomNonceString()
-      currentNonce = nonce
-      let appleIDProvider = ASAuthorizationAppleIDProvider()
-      let request = appleIDProvider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-      request.nonce = sha256(nonce)
-
-      let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-      authorizationController.delegate = self
-      authorizationController.presentationContextProvider = self
-      authorizationController.performRequests()
-    }
+//    @available(iOS 13, *)
+//    func startSignInWithAppleFlow() {
+//        let nonce = randomNonceString()
+//        currentNonce = nonce
+//        let appleIDProvider = ASAuthorizationAppleIDProvider()
+//        let request = appleIDProvider.createRequest()
+//        request.requestedScopes = [.fullName, .email]
+//        request.nonce = sha256(nonce)
+//        
+//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+//        authorizationController.delegate = self
+//        authorizationController.presentationContextProvider = self
+//        authorizationController.performRequests()
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,6 +157,10 @@ final class LoginVC: UIViewController {
                               action: #selector(loginButtonTapped),
                               for: .touchUpInside)
         
+        signupButton.addTarget(self,
+                               action: #selector(didTapRegister),
+                               for: .touchUpInside)
+        
         googleLoginButton.addTarget(self,
                                     action: #selector(googleButtonTapped),
                                     for: .touchUpInside)
@@ -163,10 +168,6 @@ final class LoginVC: UIViewController {
         appleLoginButton.addTarget(self,
                                    action: #selector(appleButtonTapped),
                                    for: .touchUpInside)
-        signupButton.addTarget(self,
-                               action: #selector(didTapRegister),
-                               for: .touchUpInside)
-
     }
     
     override func viewDidLayoutSubviews() {
@@ -182,7 +183,7 @@ final class LoginVC: UIViewController {
                                  width: size*1.5,
                                  height: size*1.5)
         emailField.frame = CGRect(x: positionX,
-                                  y: imageView.bottom+5,
+                                  y: imageView.bottom,
                                   width: width,
                                   height: height)
         passwordField.frame = CGRect(x: positionX,
@@ -193,68 +194,68 @@ final class LoginVC: UIViewController {
                                    y: passwordField.bottom+15,
                                    width: width,
                                    height: height)
-    
-    
+        
+        
         donNotHaveaAccountLabel.translatesAutoresizingMaskIntoConstraints = false
         var noALabelConstraints = [NSLayoutConstraint]()
         noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .centerX, relatedBy: .equal,
-                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+                                                      toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
         noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .bottom, relatedBy: .equal,
-                                                       toItem: signupButton, attribute: .top, multiplier: 1.0, constant: -15))
+                                                      toItem: signupButton, attribute: .top, multiplier: 1.0, constant: -15))
         noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .width, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+                                                      toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
         noALabelConstraints.append(NSLayoutConstraint(item: donNotHaveaAccountLabel, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+                                                      toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
         NSLayoutConstraint.activate(noALabelConstraints)    // these constraints must activate than will work
-
+        
         signupButton.translatesAutoresizingMaskIntoConstraints = false
         var signupBtnConstraints = [NSLayoutConstraint]()
         signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .centerX, relatedBy: .equal,
-                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+                                                       toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
         signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .bottom, relatedBy: .equal,
                                                        toItem: facebookLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
         signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .width, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+                                                       toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
         signupBtnConstraints.append(NSLayoutConstraint(item: signupButton, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+                                                       toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
         NSLayoutConstraint.activate(signupBtnConstraints)    // these constraints must activate than will work
         
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         var facebookBtnConstraints = [NSLayoutConstraint]()
         facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal,
-                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+                                                         toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
         facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .bottom, relatedBy: .equal,
-                                                       toItem: googleLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
+                                                         toItem: googleLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
         facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+                                                         toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
         facebookBtnConstraints.append(NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+                                                         toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
         NSLayoutConstraint.activate(facebookBtnConstraints)    // these constraints must activate than will work
         
         googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
         var googleBtnConstraints = [NSLayoutConstraint]()
         googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .centerX, relatedBy: .equal,
-                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+                                                       toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
         googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .bottom, relatedBy: .equal,
                                                        toItem: appleLoginButton, attribute: .top, multiplier: 1.0, constant: -15))
         googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .width, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+                                                       toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width+5))
         googleBtnConstraints.append(NSLayoutConstraint(item: googleLoginButton, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+                                                       toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height+15))
         NSLayoutConstraint.activate(googleBtnConstraints)    // these constraints must activate than will work
         
         appleLoginButton.translatesAutoresizingMaskIntoConstraints = false
         var appleBtnConstraints = [NSLayoutConstraint]()
         appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .centerX, relatedBy: .equal,
-                                              toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
+                                                      toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0))
         appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .bottom, relatedBy: .equal,
-                                              toItem: view, attribute: .bottom, multiplier: 1.0, constant: -30))
+                                                      toItem: view, attribute: .bottom, multiplier: 1.0, constant: -30))
         appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .width, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
+                                                      toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: width))
         appleBtnConstraints.append(NSLayoutConstraint(item: appleLoginButton, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
+                                                      toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: height))
         NSLayoutConstraint.activate(appleBtnConstraints)    // these constraints must activate than will work
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -369,7 +370,7 @@ final class LoginVC: UIViewController {
                                     guard let data = data else {
                                         return
                                     }
-
+                                    
                                     let fileName = chatUser.profilePictureFileName
                                     StorageManager.shared.uploadProfilePicture(with: data,
                                                                                fileName: fileName) { result in
@@ -553,7 +554,6 @@ extension LoginVC: LoginButtonDelegate {
             }
         }
         
-        
     }
     
 }
@@ -577,10 +577,10 @@ extension LoginVC: UITextFieldDelegate {
 extension LoginVC: ASAuthorizationControllerDelegate{
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-
+            
             // ask apple server for token
             
-            guard  let nonce = currentNonce else {
+            guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login")
             }
             guard let appleIDToken = appleIDCredential.identityToken else {
@@ -601,11 +601,11 @@ extension LoginVC: ASAuthorizationControllerDelegate{
                             print("can not get user fullName")
                             return
                         }
-                      
+                        
                         guard var firstName = fullName.givenName else {
                             return
                         }
-
+                        
                         if fullName.middleName != nil {
                             firstName = firstName + (fullName.middleName ?? "")
                         }
@@ -619,18 +619,18 @@ extension LoginVC: ASAuthorizationControllerDelegate{
                                                    lastName: lastName,
                                                    emailAddress: newEmail)
                         DatabaseManager.shared.insertUser(with: chatUser) { success in
-
+                            
                         }
                     }
                 }
             }
-
+            
             
             
             // Initialize a Firebase credential.
             let credential = OAuthProvider.credential(withProviderID: "apple.com",
-                                                           idToken: idTokenString,
-                                                           rawNonce: nonce)
+                                                      idToken: idTokenString,
+                                                      rawNonce: nonce)
             
             FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
                 guard let strongSelf = self else {
@@ -663,7 +663,6 @@ extension LoginVC: ASAuthorizationControllerDelegate{
                     }
                 }
                 
-                
             }
             
         }
@@ -674,49 +673,51 @@ extension LoginVC: ASAuthorizationControllerPresentationContextProviding{
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
     }
-}
-
-// Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
-private func randomNonceString(length: Int = 32) -> String {
-  precondition(length > 0)
-  let charset: [Character] =
-    Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-  var result = ""
-  var remainingLength = length
-
-  while remainingLength > 0 {
-    let randoms: [UInt8] = (0 ..< 16).map { _ in
-      var random: UInt8 = 0
-      let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
-      if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
-      }
-      return random
+    
+    // Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+        
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError(
+                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+                    )
+                }
+                return random
+            }
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+        
+        return result
     }
-
-    randoms.forEach { random in
-      if remainingLength == 0 {
-        return
-      }
-
-      if random < charset.count {
-        result.append(charset[Int(random)])
-        remainingLength -= 1
-      }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
-  }
-
-  return result
 }
 
-private func sha256(_ input: String) -> String {
-  let inputData = Data(input.utf8)
-  let hashedData = SHA256.hash(data: inputData)
-  let hashString = hashedData.compactMap {
-    String(format: "%02x", $0)
-  }.joined()
 
-  return hashString
-}

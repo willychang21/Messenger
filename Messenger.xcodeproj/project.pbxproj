@@ -191,18 +191,16 @@
 			isa = PBXGroup;
 			children = (
 				78267122281ED093005FD952 /* Login */,
+				7833D4852855A9F500A3D884 /* Walkthrough */,
 				78267114281EB8F1005FD952 /* ConversationsVC.swift */,
 				7879DB50282157090017AC60 /* ChatVC.swift */,
 				7826711E281EBA6D005FD952 /* NewConversationVC.swift */,
 				7826711A281EBA28005FD952 /* PhotoViewerVC.swift */,
 				7896D5692840B00A0094A354 /* LocationPickerVC.swift */,
 				78677E79284CEC0800DA0945 /* AudioVC.swift */,
+				78FF319B284F245100BDA19C /* BasicAudioController.swift */,
 				78267120281EBA91005FD952 /* ProfileVC.swift */,
 				787FCDB52851FBCB002CE6B8 /* AppInfoVC.swift */,
-				78FF319B284F245100BDA19C /* BasicAudioController.swift */,
-				787FCDBB28530BD8002CE6B8 /* WalkthroughContentVC.swift */,
-				787FCDBD28530C1D002CE6B8 /* WalkthroughPageVC.swift */,
-				787FCDBF28530C45002CE6B8 /* WalkthroughVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -224,6 +222,16 @@
 				78267118281EBA07005FD952 /* RegisterVC.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		7833D4852855A9F500A3D884 /* Walkthrough */ = {
+			isa = PBXGroup;
+			children = (
+				787FCDBB28530BD8002CE6B8 /* WalkthroughContentVC.swift */,
+				787FCDBD28530C1D002CE6B8 /* WalkthroughPageVC.swift */,
+				787FCDBF28530C45002CE6B8 /* WalkthroughVC.swift */,
+			);
+			path = Walkthrough;
 			sourceTree = "<group>";
 		};
 		7896D57C2843822E0094A354 /* Extension */ = {
