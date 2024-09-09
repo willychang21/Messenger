@@ -1,0 +1,59 @@
+# Xcode
+.DS_Store
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/xcshareddata/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+Carthage/Checkouts/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/report.xcresult
+
+# Xcode specific files
+*.xccheckout
+*.moved-aside
+*.xcuserdatad
+
+# iOS specific
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# App Center
+appcenter-pre-build.sh
+
+# macOS specific
+Icon?
+__MACOSX
+
+# Certificates
+*.cer
+*.crt
+*.pem
+*.mobileprovision
+*.xcconfig
+
+# Archives
+*.xcarchive
+
+# Firebase configuration files
+GoogleService-Info.plist
